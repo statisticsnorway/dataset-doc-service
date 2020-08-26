@@ -16,7 +16,7 @@ module no.ssb.dapla.dataset.doc.service {
     requires io.helidon.webclient;
 
     requires avro;
-    requires no.ssb.dapla.dataset.uri;
+    requires no.ssb.dapla.dataset.doc;
 
     exports no.ssb.dapla.dataset.doc.service;
 
