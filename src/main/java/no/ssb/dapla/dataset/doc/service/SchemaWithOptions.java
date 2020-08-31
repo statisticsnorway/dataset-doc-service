@@ -3,15 +3,21 @@ package no.ssb.dapla.dataset.doc.service;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class SchemaWithOptions {
-
     @JsonProperty
     private boolean useSimpleFiltering;
 
     @JsonProperty
-    private String avroSchemaJson;
+    private String schema;
 
-    public String getAvroSchemaJson() {
-        return avroSchemaJson;
+    @JsonProperty
+    private String schemaType;
+
+    public String getSchema() {
+        return schema;
+    }
+
+    public String getSchemaType() {
+        return schemaType;
     }
 
     public Boolean useSimpleFiltering() {
@@ -21,8 +27,9 @@ public class SchemaWithOptions {
     public SchemaWithOptions() {
     }
 
-    public SchemaWithOptions(boolean simple, String avroSchemaJson) {
-        this.useSimpleFiltering = simple;
-        this.avroSchemaJson = avroSchemaJson;
+    public SchemaWithOptions(boolean useSimpleFiltering, String schemaType, String schema) {
+        this.useSimpleFiltering = useSimpleFiltering;
+        this.schema = schema;
+        this.schemaType = schemaType;
     }
 }

@@ -14,6 +14,8 @@ import io.helidon.webclient.WebClientResponse;
 import io.helidon.webserver.WebServer;
 import org.apache.avro.Schema;
 import org.apache.avro.SchemaBuilder;
+import org.apache.spark.sql.avro.SchemaConverters;
+import org.apache.spark.sql.types.StructType;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -64,7 +66,6 @@ class DatasetDocServiceHttpTest {
     }
 
     @Test
-//    @Disabled()
     public void thatWeCanPostSchemaAndGetTemplate() throws JsonProcessingException {
         Schema schema = SchemaBuilder
                 .record("root")
@@ -74,7 +75,7 @@ class DatasetDocServiceHttpTest {
                 .endRecord();
 
         String jsonAvroSchemaString = schema.toString();
-        SchemaWithOptions schemaWithOptions = new SchemaWithOptions(false, jsonAvroSchemaString);
+        SchemaWithOptions schemaWithOptions = new SchemaWithOptions(false, "AVRO", jsonAvroSchemaString);
         String json = new ObjectMapper().writeValueAsString(schemaWithOptions);
 
         WebClient webClient = WebClient.builder()
@@ -93,4 +94,41 @@ class DatasetDocServiceHttpTest {
         Http.ResponseStatus status = response.status();
         System.out.println(status);
     }
+
+    @Test
+    public void thatWeCanPostSparkSchemaAndGetTemplate() throws JsonProcessingException {
+        Schema schema = SchemaBuilder
+                .record("root")
+                .fields()
+                .name("userId").type().stringType().noDefault()
+                .name("name").type().optional().stringType()
+                .endRecord();
+
+        SchemaConverters.SchemaType schemaType = SchemaConverters.toSqlType(schema);
+        String schameJson = schemaType.dataType().json();
+
+        SchemaWithOptions schemaWithOptions = new SchemaWithOptions(false, "SPARK", schameJson);
+        String optionsJson = new ObjectMapper()
+                .writerWithDefaultPrettyPrinter()
+                .writeValueAsString(schemaWithOptions);
+        System.out.println(optionsJson);
+
+        WebClient webClient = WebClient.builder()
+                .baseUri("http://localhost:" + webServer.port())
+                .addMediaSupport(DefaultMediaSupport.create())
+                .addMediaSupport(JacksonSupport.create(mapper))
+                .build();
+
+        WebClientResponse response = webClient.post()
+                .path("/doc/template")
+                .submit(optionsJson).toCompletableFuture().join();
+
+        String body = response.content().as(String.class).toCompletableFuture().join();
+        System.out.println(body);
+
+        Http.ResponseStatus status = response.status();
+        System.out.println(status);
+        assert status== Http.Status.OK_200;
+    }
+
 }

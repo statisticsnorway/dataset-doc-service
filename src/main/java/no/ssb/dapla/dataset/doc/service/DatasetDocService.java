@@ -10,6 +10,9 @@ import io.helidon.webserver.Service;
 import no.ssb.dapla.dataset.doc.template.ConceptNameLookup;
 import no.ssb.dapla.dataset.doc.template.SchemaToTemplate;
 import org.apache.avro.Schema;
+import org.apache.spark.sql.avro.SchemaConverters;
+import org.apache.spark.sql.types.DataType;
+import org.apache.spark.sql.types.StructType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,7 +84,8 @@ public class DatasetDocService implements Service {
 
     private void createTemplate(ServerRequest req, ServerResponse res, SchemaWithOptions schemaWithOptions) {
         try {
-            String result = convert(schemaWithOptions);
+            Schema avroSchema = getAvroSchema(schemaWithOptions.getSchemaType(), schemaWithOptions.getSchema());
+            String result = convert(avroSchema, schemaWithOptions.useSimpleFiltering());
             res.status(Http.Status.OK_200).send(result);
         } catch (Exception e) {
             LOG.error("error", e);
@@ -100,14 +104,20 @@ public class DatasetDocService implements Service {
         }
     }
 
-    private String convert(SchemaWithOptions schemaWithOptions) {
-        Schema schema = parse(schemaWithOptions.getAvroSchemaJson());
-
-        SchemaToTemplate schemaToTemplate = new SchemaToTemplate(schema, conceptNameLookup).withDoSimpleFiltering(schemaWithOptions.useSimpleFiltering());
-        return schemaToTemplate.generateSimpleTemplateAsJsonString();
+    private Schema getAvroSchema(String schemaType, String schema) {
+        switch (schemaType) {
+            case "AVRO":
+                return new Schema.Parser().parse(schema);
+            case "SPARK":
+                DataType fromDDL = StructType.fromJson(schema);
+                return SchemaConverters.toAvroType(fromDDL, false, "spark_schema", "namespace");
+            default:
+                throw new IllegalArgumentException("SchemaType " + schemaType + " not supported");
+        }
     }
 
-    private Schema parse(String json) {
-        return new Schema.Parser().parse(json);
+    private String convert(Schema schema, boolean useSimpleFiltering) {
+        SchemaToTemplate schemaToTemplate = new SchemaToTemplate(schema, conceptNameLookup).withDoSimpleFiltering(useSimpleFiltering);
+        return schemaToTemplate.generateSimpleTemplateAsJsonString();
     }
 }
