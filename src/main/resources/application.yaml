@@ -4,6 +4,23 @@ server:
   access-log:
     format: "%h %u %t %r %s %b %{Referer}i %T"
 
+concept-lds:
+  port: 9090
+  host: http://localhost
+  schemas:
+    - About
+    - ClassificationSubset
+    - DescribedValueDomain
+    - EnumeratedValueDomain
+    - MeasurementType
+    - MeasurementUnit
+    - Population
+    - RepresentedVariable
+    - SubjectField
+    - UnitType
+    - Universe
+    - Variable
+
 tracing:
   enabled: false
   service: test-application

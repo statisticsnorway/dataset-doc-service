@@ -7,7 +7,6 @@ import io.helidon.webserver.Routing;
 import io.helidon.webserver.ServerRequest;
 import io.helidon.webserver.ServerResponse;
 import io.helidon.webserver.Service;
-import no.ssb.dapla.dataset.doc.template.ConceptNameLookup;
 import no.ssb.dapla.dataset.doc.template.SchemaToTemplate;
 import org.apache.avro.Schema;
 import org.apache.spark.sql.avro.SchemaConverters;
@@ -16,64 +15,14 @@ import org.apache.spark.sql.types.StructType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
-import java.util.Map;
-
 public class DatasetDocService implements Service {
 
     private static final Logger LOG = LoggerFactory.getLogger(DatasetDocService.class);
 
-    // Only for testing before we connect to concept service
-    ConceptNameLookup conceptNameLookup = new ConceptNameLookup() {
-        @Override
-        public Map<String, String> getNameToIds(String conceptType) {
-            switch (conceptType) {
-                case "Population":
-                    return Map.of("some-id-could-be-guid", "All families 2018-01-01",
-                            "Population_DUMMY", "Population_default");
-                case "RepresentedVariable":
-                    return Map.of("some-id-could-be-guid", "NationalFamilyIdentifier",
-                            "RepresentedVariable_DUMMY", "RepresentedVariable_default");
-                case "EnumeratedValueDomain":
-                    return Map.of("some-id-could-be-guid", "Standard for gruppering av familier",
-                            "EnumeratedValueDomain_DUMMY", "EnumeratedValueDomain_default");
-                case "DescribedValueDomain":
-                    return Map.of("some-id-could-be-guid", "Heltall",
-                            "DescribedValueDomain_DUMMY", "DescribedValueDomain_default",
-                            "ValueDomain_DUMMY", "ValueDomain_default"
-                    );
-                case "UnitType":
-                    return Map.of("some-id-could-be-guid", "Heltall",
-                            "UnitType_DUMMY", "UnitType_default");
-                default:
-                    throw new IllegalArgumentException("");
-            }
-        }
-
-        @Override
-        public List<String> getGsimSchemaEnum(String conceptType, String enumType) {
-            switch (conceptType) {
-                case "InstanceVariable":
-                    return processInstanceVariable(enumType);
-                default:
-                    throw new IllegalArgumentException("");
-            }
-        }
-
-        private List<String> processInstanceVariable(String enumType) {
-            switch (enumType) {
-                case "dataStructureComponentType":
-                    return List.of("IDENTIFIER", "MEASURE", "ATTRIBUTE");
-                case "dataStructureComponentRole":
-                    return List.of("ENTITY", "IDENTITY", "COUNT", "TIME", "GEO");
-                default:
-                    throw new IllegalArgumentException("");
-            }
-        }
-    };
-
+    private final ConceptClient conceptClient;
 
     DatasetDocService(Config config) {
+        conceptClient = new ConceptClient(config);
     }
 
     @Override
@@ -117,7 +66,7 @@ public class DatasetDocService implements Service {
     }
 
     private String convert(Schema schema, boolean useSimpleFiltering) {
-        SchemaToTemplate schemaToTemplate = new SchemaToTemplate(schema, conceptNameLookup).withDoSimpleFiltering(useSimpleFiltering);
+        SchemaToTemplate schemaToTemplate = new SchemaToTemplate(schema, conceptClient.getConceptNameLookup()).withDoSimpleFiltering(useSimpleFiltering);
         return schemaToTemplate.generateSimpleTemplateAsJsonString();
     }
 }
