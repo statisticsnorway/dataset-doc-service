@@ -22,8 +22,8 @@ concept-lds:
     - Variable
 
 tracing:
-  enabled: false
-  service: test-application
+  enabled: true
+  service: dataset-doc-service
   sampler-type: const
   sampler-param: 1
   propagation: b3
