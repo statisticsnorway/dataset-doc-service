@@ -35,6 +35,7 @@ public class DatasetDocApplication {
         SLF4JBridgeHandler.removeHandlersForRootLogger();
         SLF4JBridgeHandler.install();
         LOG = LoggerFactory.getLogger(DatasetDocApplication.class);
+        LOG.info("Logger is initialised");
     }
 
     private final Map<Class<?>, Object> instanceByType = new ConcurrentHashMap<>();
@@ -96,7 +97,7 @@ public class DatasetDocApplication {
         app.get(WebServer.class).start()
                 .thenAccept(ws -> {
                     System.out.println(
-                            "WEB server is up! http://" + ws.configuration().bindAddress()+ ":" + ws.port() + "/concept");
+                            "WEB server is up! http://" + ws.configuration().bindAddress()+ ":" + ws.port() + "/doc");
                     ws.whenShutdown().thenRun(()
                             -> System.out.println("WEB server is DOWN. Good bye!"));
                 })
