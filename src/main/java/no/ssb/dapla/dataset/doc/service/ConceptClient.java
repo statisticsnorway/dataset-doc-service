@@ -3,16 +3,24 @@ package no.ssb.dapla.dataset.doc.service;
 import io.helidon.config.Config;
 import io.helidon.config.ConfigValue;
 import no.ssb.dapla.dataset.doc.template.ConceptNameLookup;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ConceptClient {
 
     private final ConceptNameLookup conceptNameLookup;
+    private static final Logger LOG = LoggerFactory.getLogger(ConceptClient.class);
 
     public ConceptClient(Config config) {
         ConfigValue<Boolean> booleanConfigValue = config.get("concept-lds.mock").asBoolean();
         if (booleanConfigValue.isPresent() && booleanConfigValue.get()) {
+            LOG.info("Using mock concept service");
             conceptNameLookup = new MockConceptLookup();
         } else {
+            if (LOG.isInfoEnabled()) {
+                LOG.info(String.format("Using concept service at {}:{}", config.get("concept-lds.host"),
+                        config.get("concept-lds.port")));
+            }
             conceptNameLookup = new LdsConceptLookup(config);
         }
     }
