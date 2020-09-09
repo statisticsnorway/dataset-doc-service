@@ -2,6 +2,7 @@ package no.ssb.dapla.dataset.doc.service;
 
 import ch.qos.logback.classic.util.ContextInitializer;
 import io.helidon.config.Config;
+import io.helidon.config.ConfigSources;
 import io.helidon.health.HealthSupport;
 import io.helidon.health.checks.HealthChecks;
 import io.helidon.media.jackson.JacksonSupport;
@@ -70,13 +71,25 @@ public class DatasetDocApplication {
         put(WebServer.class, server);
     }
 
+    public static Config createDefaultConfig() {
+        Config.Builder config = Config.builder();
+        String overrideFile = System.getenv("HELIDON_CONFIG_FILE");
+        if (overrideFile != null) {
+            config.addSource(ConfigSources.file(overrideFile).optional());
+        }
+
+        config.addSource(ConfigSources.file("conf/application.yaml").optional());
+        config.addSource(ConfigSources.classpath("application.yaml").build());
+        return config.build();
+    }
+
     /**
      * Application main entry point.
      *
      * @param args command line arguments.
      */
     public static void main(final String[] args) {
-        DatasetDocApplication app = new DatasetDocApplication(Config.create());
+        DatasetDocApplication app = new DatasetDocApplication(createDefaultConfig());
 
         // Try to start the server. If successful, print some info and arrange to
         // print a message at shutdown. If unsuccessful, print the exception.
