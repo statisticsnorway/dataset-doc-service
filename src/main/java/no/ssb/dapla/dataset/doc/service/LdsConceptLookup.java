@@ -35,26 +35,33 @@ public class LdsConceptLookup implements ConceptNameLookup {
     }
 
     public Map<String, String> getNameToIds(String conceptType) {
-        if (!ldsSchemas.contains(conceptType)) {
-            String msg = String.format("concept lds do not provide %s resource", conceptType);
-            throw new IllegalArgumentException(msg);
-        }
-        WebClient webClient = WebClient.builder()
-                .baseUri(host + ":" + port + "/ns/" + conceptType)
-                .addMediaSupport(DefaultMediaSupport.create())
-                .addMediaSupport(JacksonSupport.create(mapper))
-                .build();
+        try {
+            if (!ldsSchemas.contains(conceptType)) {
+                String msg = String.format("concept lds do not provide %s resource", conceptType);
+                throw new IllegalArgumentException(msg);
+            }
+            LOG.info("Calling {}:{}/ns/{}", host, port, conceptType);
+            WebClient webClient = WebClient.builder()
+                    .baseUri(host + ":" + port + "/ns/" + conceptType)
+                    .addMediaSupport(DefaultMediaSupport.create())
+                    .addMediaSupport(JacksonSupport.create(mapper))
+                    .build();
 
-        WebClientResponse response = webClient.get().submit().toCompletableFuture().join();
-        JsonNode body = response.content().as(JsonNode.class).toCompletableFuture().join();
-        HashMap<String, String> map = new HashMap<>();
-        for (Iterator<JsonNode> it = body.elements(); it.hasNext(); ) {
-            JsonNode node = it.next();
-            // TODO: more checks, or move to graphQL
-            String name = node.get("name").get(0).get("languageText").asText();
-            map.put(node.get("id").asText(), name);
+            WebClientResponse response = webClient.get().submit().toCompletableFuture().join();
+            JsonNode body = response.content().as(JsonNode.class).toCompletableFuture().join();
+            HashMap<String, String> map = new HashMap<>();
+            for (Iterator<JsonNode> it = body.elements(); it.hasNext(); ) {
+                JsonNode node = it.next();
+                // TODO: more checks, or move to graphQL
+                String name = node.get("name").get(0).get("languageText").asText();
+                map.put(node.get("id").asText(), name);
+            }
+            LOG.info("Returned map size: {}", map.size());
+            return map;
+        } catch (Exception e) {
+            LOG.info("Unexpected error", e);
+            throw e;
         }
-        return map;
     }
 
     @Override
@@ -63,7 +70,8 @@ public class LdsConceptLookup implements ConceptNameLookup {
             case "InstanceVariable":
                 return processInstanceVariable(enumType);
             default:
-                throw new IllegalArgumentException("");
+                LOG.error("Unknown conceptType: " + conceptType);
+                throw new IllegalArgumentException("Unknown conceptType: " + conceptType);
         }
     }
 
@@ -74,7 +82,8 @@ public class LdsConceptLookup implements ConceptNameLookup {
             case "dataStructureComponentRole":
                 return List.of("ENTITY", "IDENTITY", "COUNT", "TIME", "GEO");
             default:
-                throw new IllegalArgumentException("");
+                LOG.error("Unknown enumType: " + enumType);
+                throw new IllegalArgumentException("Unknown enumType: " + enumType);
         }
     }
 }
