@@ -8,6 +8,8 @@ import io.helidon.media.jackson.JacksonSupport;
 import io.helidon.webclient.WebClient;
 import io.helidon.webclient.WebClientResponse;
 import no.ssb.dapla.dataset.doc.template.ConceptNameLookup;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -19,11 +21,17 @@ public class LdsConceptLookup implements ConceptNameLookup {
     private final String host;
     private final List<String> ldsSchemas;
     private static final ObjectMapper mapper = new ObjectMapper();
+    private static final Logger LOG = LoggerFactory.getLogger(LdsConceptLookup.class);
 
     public LdsConceptLookup(Config config) {
-        port = config.get("concept-lds.port").asInt().get();
-        host = config.get("concept-lds.host").asString().get();
-        ldsSchemas = config.get("concept-lds.schemas").asList(String.class).get();
+        host = config.get("concept-lds").get("host").asString().orElseThrow(() ->
+                new RuntimeException("missing configuration: concept-lds.host"));
+        port = config.get("concept-lds").get("port").asInt().orElseThrow(() ->
+                new RuntimeException("missing configuration: concept-lds.port"));
+
+        LOG.info("Creating LdsConceptLookup with configuration: host={}, port={}", host, port);
+        ldsSchemas = config.get("concept-lds").get("schemas").asList(String.class).get();
+        LOG.info("Using schemas={}", ldsSchemas);
     }
 
     public Map<String, String> getNameToIds(String conceptType) {

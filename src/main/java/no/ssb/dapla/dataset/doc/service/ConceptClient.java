@@ -12,15 +12,11 @@ public class ConceptClient {
     private static final Logger LOG = LoggerFactory.getLogger(ConceptClient.class);
 
     public ConceptClient(Config config) {
-        ConfigValue<Boolean> booleanConfigValue = config.get("concept-lds.mock").asBoolean();
+        ConfigValue<Boolean> booleanConfigValue = config.get("concept-lds").get("mock").asBoolean();
         if (booleanConfigValue.isPresent() && booleanConfigValue.get()) {
             LOG.info("Using mock concept service");
             conceptNameLookup = new MockConceptLookup();
         } else {
-            if (LOG.isInfoEnabled()) {
-                LOG.info(String.format("Using concept service at {}:{}", config.get("concept-lds.host"),
-                        config.get("concept-lds.port")));
-            }
             conceptNameLookup = new LdsConceptLookup(config);
         }
     }
