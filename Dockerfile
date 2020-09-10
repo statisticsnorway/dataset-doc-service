@@ -1,7 +1,8 @@
 #
 # Build Application image
 #
-FROM openjdk:14-slim
+FROM adoptopenjdk/openjdk14:alpine
+RUN apk --no-cache add curl
 
 #
 # Resources from build image
