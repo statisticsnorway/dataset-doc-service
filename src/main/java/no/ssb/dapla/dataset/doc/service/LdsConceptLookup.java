@@ -2,6 +2,7 @@ package no.ssb.dapla.dataset.doc.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.helidon.common.http.MediaType;
 import io.helidon.config.Config;
 import io.helidon.media.common.DefaultMediaSupport;
 import io.helidon.media.jackson.JacksonSupport;
@@ -47,7 +48,7 @@ public class LdsConceptLookup implements ConceptNameLookup {
                     .addMediaSupport(JacksonSupport.create(mapper))
                     .build();
 
-            WebClientResponse response = webClient.get().submit().toCompletableFuture().join();
+            WebClientResponse response = webClient.get().contentType(MediaType.APPLICATION_JSON).submit().toCompletableFuture().join();
             JsonNode body = response.content().as(JsonNode.class).toCompletableFuture().join();
             HashMap<String, String> map = new HashMap<>();
             for (Iterator<JsonNode> it = body.elements(); it.hasNext(); ) {

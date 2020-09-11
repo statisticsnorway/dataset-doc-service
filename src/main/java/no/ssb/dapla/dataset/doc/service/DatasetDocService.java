@@ -1,6 +1,7 @@
 package no.ssb.dapla.dataset.doc.service;
 
 import io.helidon.common.http.Http;
+import io.helidon.common.http.MediaType;
 import io.helidon.config.Config;
 import io.helidon.webserver.Handler;
 import io.helidon.webserver.Routing;
@@ -35,6 +36,7 @@ public class DatasetDocService implements Service {
         try {
             Schema avroSchema = getAvroSchema(schemaWithOptions.getSchemaType(), schemaWithOptions.getSchema());
             String result = convert(avroSchema, schemaWithOptions.useSimpleFiltering());
+            res.headers().contentType(MediaType.APPLICATION_JSON);
             res.status(Http.Status.OK_200).send(result);
         } catch (Exception e) {
             LOG.error("error", e);
