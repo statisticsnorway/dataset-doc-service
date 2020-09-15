@@ -49,6 +49,7 @@ public class DatasetDocApplication {
         MetricsSupport metrics = MetricsSupport.create();
 
         DatasetDocService datasetDocService = new DatasetDocService(config);
+        LineageDocService lineageDocService = new LineageDocService(config);
 
         ServerConfiguration.Builder serverConfig = ServerConfiguration.builder(config);
         config.get("server.port").asInt().ifPresent(serverConfig::port);
@@ -67,6 +68,7 @@ public class DatasetDocApplication {
                         .register(health)
                         .register(metrics)
                         .register("/doc", datasetDocService)
+                        .register("/lineage", lineageDocService)
                         .build()
         ).config(serverConfig).addMediaSupport(JacksonSupport.create()).build();
         put(WebServer.class, server);

@@ -12,6 +12,7 @@ import io.helidon.media.jackson.JacksonSupport;
 import io.helidon.webclient.WebClient;
 import io.helidon.webclient.WebClientResponse;
 import io.helidon.webserver.WebServer;
+import no.ssb.dapla.dataset.doc.service.model.SchemaWithOptions;
 import org.apache.avro.Schema;
 import org.apache.avro.SchemaBuilder;
 import org.apache.spark.sql.avro.SchemaConverters;

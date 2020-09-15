@@ -1,35 +1,32 @@
-package no.ssb.dapla.dataset.doc.service;
+package no.ssb.dapla.dataset.doc.service.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 public class SchemaWithOptions {
     @JsonProperty
     private boolean useSimpleFiltering;
 
-    @JsonProperty
-    private String schema;
-
-    @JsonProperty
-    private String schemaType;
+    @JsonUnwrapped
+    private SchemaType schemaType;
 
     public String getSchema() {
-        return schema;
+        return schemaType.getSchema();
     }
 
     public String getSchemaType() {
-        return schemaType;
+        return schemaType.getSchemaType();
     }
 
     public Boolean useSimpleFiltering() {
         return useSimpleFiltering;
     }
 
-    public SchemaWithOptions() {
+    private SchemaWithOptions() {
     }
 
     public SchemaWithOptions(boolean useSimpleFiltering, String schemaType, String schema) {
         this.useSimpleFiltering = useSimpleFiltering;
-        this.schema = schema;
-        this.schemaType = schemaType;
+        this.schemaType = new SchemaType(schemaType, schema);
     }
 }

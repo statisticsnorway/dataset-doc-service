@@ -8,11 +8,10 @@ import io.helidon.webserver.Routing;
 import io.helidon.webserver.ServerRequest;
 import io.helidon.webserver.ServerResponse;
 import io.helidon.webserver.Service;
+import no.ssb.dapla.dataset.doc.service.model.SchemaMapper;
+import no.ssb.dapla.dataset.doc.service.model.SchemaWithOptions;
 import no.ssb.dapla.dataset.doc.template.SchemaToTemplate;
 import org.apache.avro.Schema;
-import org.apache.spark.sql.avro.SchemaConverters;
-import org.apache.spark.sql.types.DataType;
-import org.apache.spark.sql.types.StructType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +33,7 @@ public class DatasetDocService implements Service {
 
     private void createTemplate(ServerRequest req, ServerResponse res, SchemaWithOptions schemaWithOptions) {
         try {
-            Schema avroSchema = getAvroSchema(schemaWithOptions.getSchemaType(), schemaWithOptions.getSchema());
+            Schema avroSchema = SchemaMapper.getAvroSchema(schemaWithOptions.getSchemaType(), schemaWithOptions.getSchema());
             String result = convert(avroSchema, schemaWithOptions.useSimpleFiltering());
             res.headers().contentType(MediaType.APPLICATION_JSON);
             res.status(Http.Status.OK_200).send(result);
@@ -52,18 +51,6 @@ public class DatasetDocService implements Service {
         } catch (Exception e) {
             LOG.error("error", e);
             res.status(Http.Status.INTERNAL_SERVER_ERROR_500).send(e.getMessage());
-        }
-    }
-
-    private Schema getAvroSchema(String schemaType, String schema) {
-        switch (schemaType) {
-            case "AVRO":
-                return new Schema.Parser().parse(schema);
-            case "SPARK":
-                DataType fromDDL = StructType.fromJson(schema);
-                return SchemaConverters.toAvroType(fromDDL, false, "spark_schema", "namespace");
-            default:
-                throw new IllegalArgumentException("SchemaType " + schemaType + " not supported");
         }
     }
 
