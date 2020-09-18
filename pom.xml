@@ -124,7 +124,7 @@
         <dependency>
             <groupId>no.ssb.dapla</groupId>
             <artifactId>dataset-doc</artifactId>
-            <version>0.2-SNAPSHOT</version>
+            <version>0.3-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>

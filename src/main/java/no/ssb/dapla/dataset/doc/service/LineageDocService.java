@@ -14,8 +14,6 @@ import no.ssb.dapla.dataset.doc.service.model.SchemaType;
 import no.ssb.dapla.dataset.doc.service.model.SchemaWithDependencies;
 import no.ssb.dapla.dataset.doc.traverse.SchemaWithPath;
 import org.apache.avro.Schema;
-import org.apache.spark.sql.avro.SchemaConverters;
-import org.apache.spark.sql.types.StructType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,7 +35,7 @@ public class LineageDocService implements Service {
     private void createTemplate(ServerRequest req, ServerResponse res, SchemaWithDependencies schemaWithDependencies) {
         try {
             Schema avroSchema = SchemaMapper.getAvroSchema(schemaWithDependencies.getSchemaType(), schemaWithDependencies.getSchema());
-            String result = convert(avroSchema, schemaWithDependencies.getDependencies());
+            String result = convert(avroSchema, schemaWithDependencies.getDependencies(), schemaWithDependencies.isSimpleLineage());
             res.headers().contentType(MediaType.APPLICATION_JSON);
             res.status(Http.Status.OK_200).send(result);
         } catch (Exception e) {
@@ -46,9 +44,10 @@ public class LineageDocService implements Service {
         }
     }
 
-    private String convert(Schema avroSchema, List<Map<String, SchemaType>> dependencies) {
+    private String convert(Schema avroSchema, List<Map<String, SchemaType>> dependencies, boolean isSimpleLineage) {
         LineageBuilder.SchemaToLineageBuilder lineageBuilder =
                 LineageBuilder.createSchemaToLineageBuilder()
+                        .simple(isSimpleLineage)
                         .outputSchema(avroSchema);
 
         for (Map<String, SchemaType> item : dependencies) {

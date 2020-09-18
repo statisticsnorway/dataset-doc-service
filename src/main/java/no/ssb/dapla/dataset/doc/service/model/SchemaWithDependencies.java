@@ -14,6 +14,9 @@ public class SchemaWithDependencies {
     @JsonProperty
     List<Map<String, SchemaType>> dependencies;
 
+    @JsonProperty
+    private boolean simpleLineage;
+
     public String getSchema() {
         return schemaType.getSchema();
     }
@@ -26,11 +29,17 @@ public class SchemaWithDependencies {
         return dependencies;
     }
 
+    public boolean isSimpleLineage() {
+        return simpleLineage;
+    }
+
     private SchemaWithDependencies() {
     }
 
-    public SchemaWithDependencies(String schemaType, String schema, List<Map<String, SchemaType>> dependencies) {
+    public SchemaWithDependencies(String schemaType, String schema, List<Map<String, SchemaType>> dependencies,
+                                  boolean simpleLineage) {
         this.schemaType = new SchemaType(schemaType, schema);
         this.dependencies = dependencies;
+        this.simpleLineage = simpleLineage;
     }
 }

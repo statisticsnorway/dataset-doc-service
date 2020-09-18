@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 import static io.helidon.config.ConfigSources.*;
 
@@ -87,6 +89,37 @@ class LineageDocServiceHttpTest {
     }
 
     @Test
+    void thatWeCanPostSparkSchemaAndGetSimpleTemplate() throws JsonProcessingException {
+        Schema schema = SchemaBuilder
+                .record("root")
+                .fields()
+                .name("userId").type().stringType().noDefault()
+                .name("name").type().optional().stringType()
+                .endRecord();
+
+        SchemaConverters.SchemaType schemaType = SchemaConverters.toSqlType(schema);
+        String schemaJson = schemaType.dataType().json();
+
+        List<Map<String, SchemaType>> dependencies = new ArrayList<>();
+        dependencies.add(new SingletonMap("/path/to/dataset", new SchemaType("SPARK", schemaJson)));
+        SchemaWithDependencies schemaWithDependencies = new SchemaWithDependencies("SPARK", schemaJson,
+                dependencies, true);
+        String requestJson = new ObjectMapper()
+                .writerWithDefaultPrettyPrinter()
+                .writeValueAsString(schemaWithDependencies);
+        System.out.println(requestJson);
+
+        WebClientResponse response = getWebClientResponse(requestJson);
+
+        Http.ResponseStatus status = response.status();
+        assert status == Http.Status.OK_200;
+
+        String body = response.content().as(String.class).toCompletableFuture().join();
+        assertEquals(expected_simple_lineage_doc, body);
+
+    }
+
+    @Test
     void thatWeCanPostSparkSchemaAndGetTemplate() throws JsonProcessingException {
         Schema schema = SchemaBuilder
                 .record("root")
@@ -100,7 +133,8 @@ class LineageDocServiceHttpTest {
 
         List<Map<String, SchemaType>> dependencies = new ArrayList<>();
         dependencies.add(new SingletonMap("/path/to/dataset", new SchemaType("SPARK", schemaJson)));
-        SchemaWithDependencies schemaWithDependencies = new SchemaWithDependencies("SPARK", schemaJson, dependencies);
+        SchemaWithDependencies schemaWithDependencies = new SchemaWithDependencies("SPARK", schemaJson,
+                dependencies, false);
         String requestJson = new ObjectMapper()
                 .writerWithDefaultPrettyPrinter()
                 .writeValueAsString(schemaWithDependencies);
@@ -112,9 +146,22 @@ class LineageDocServiceHttpTest {
         assert status == Http.Status.OK_200;
 
         String body = response.content().as(String.class).toCompletableFuture().join();
-        assert body.equals(expected_lineage_doc);
+        assertEquals(expected_lineage_doc, body);
 
     }
+
+    static String expected_simple_lineage_doc = "{\n" +
+            "  \"lineage\": {\n" +
+            "    \"name\": \"spark_schema\",\n" +
+            "    \"type\": \"structure\",\n" +
+            "    \"sources\": [\n" +
+            "      {\n" +
+            "        \"path\": \"/path/to/dataset\",\n" +
+            "        \"version\": 123\n" +
+            "      }\n" +
+            "    ]\n" +
+            "  }\n" +
+            "}";
 
     static String expected_lineage_doc = "{\n" +
             "  \"lineage\": {\n" +
@@ -144,6 +191,12 @@ class LineageDocServiceHttpTest {
             "            \"version\": 123\n" +
             "          }\n" +
             "        ]\n" +
+            "      }\n" +
+            "    ],\n" +
+            "    \"sources\": [\n" +
+            "      {\n" +
+            "        \"path\": \"/path/to/dataset\",\n" +
+            "        \"version\": 123\n" +
             "      }\n" +
             "    ]\n" +
             "  }\n" +
