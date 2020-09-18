@@ -53,7 +53,7 @@ public class LineageDocService implements Service {
         for (Map<String, SchemaType> item : dependencies) {
             for (Map.Entry<String, SchemaType> entry : item.entrySet()) {
                 Schema inputSchema = SchemaMapper.getAvroSchema(entry.getValue().getSchemaType(), entry.getValue().getSchema());
-                lineageBuilder.addInput(new SchemaWithPath(inputSchema, entry.getKey(), 123));
+                lineageBuilder.addInput(new SchemaWithPath(inputSchema, entry.getKey(), entry.getValue().getTimestamp()));
             }
         }
         return lineageBuilder.build().generateTemplateAsJsonString();

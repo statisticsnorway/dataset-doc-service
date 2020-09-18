@@ -36,9 +36,10 @@ public class SchemaWithDependencies {
     private SchemaWithDependencies() {
     }
 
-    public SchemaWithDependencies(String schemaType, String schema, List<Map<String, SchemaType>> dependencies,
+    public SchemaWithDependencies(String schemaType, String schema, Long timestamp,
+                                  List<Map<String, SchemaType>> dependencies,
                                   boolean simpleLineage) {
-        this.schemaType = new SchemaType(schemaType, schema);
+        this.schemaType = new SchemaType(schemaType, schema, timestamp);
         this.dependencies = dependencies;
         this.simpleLineage = simpleLineage;
     }

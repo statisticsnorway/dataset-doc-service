@@ -27,6 +27,6 @@ public class SchemaWithOptions {
 
     public SchemaWithOptions(boolean useSimpleFiltering, String schemaType, String schema) {
         this.useSimpleFiltering = useSimpleFiltering;
-        this.schemaType = new SchemaType(schemaType, schema);
+        this.schemaType = new SchemaType(schemaType, schema, null);
     }
 }

@@ -101,8 +101,8 @@ class LineageDocServiceHttpTest {
         String schemaJson = schemaType.dataType().json();
 
         List<Map<String, SchemaType>> dependencies = new ArrayList<>();
-        dependencies.add(new SingletonMap("/path/to/dataset", new SchemaType("SPARK", schemaJson)));
-        SchemaWithDependencies schemaWithDependencies = new SchemaWithDependencies("SPARK", schemaJson,
+        dependencies.add(new SingletonMap("/path/to/dataset", new SchemaType("SPARK", schemaJson, 1234L)));
+        SchemaWithDependencies schemaWithDependencies = new SchemaWithDependencies("SPARK", schemaJson, 12345L,
                 dependencies, true);
         String requestJson = new ObjectMapper()
                 .writerWithDefaultPrettyPrinter()
@@ -132,8 +132,8 @@ class LineageDocServiceHttpTest {
         String schemaJson = schemaType.dataType().json();
 
         List<Map<String, SchemaType>> dependencies = new ArrayList<>();
-        dependencies.add(new SingletonMap("/path/to/dataset", new SchemaType("SPARK", schemaJson)));
-        SchemaWithDependencies schemaWithDependencies = new SchemaWithDependencies("SPARK", schemaJson,
+        dependencies.add(new SingletonMap("/path/to/dataset", new SchemaType("SPARK", schemaJson, 123L)));
+        SchemaWithDependencies schemaWithDependencies = new SchemaWithDependencies("SPARK", schemaJson, null,
                 dependencies, false);
         String requestJson = new ObjectMapper()
                 .writerWithDefaultPrettyPrinter()
@@ -157,7 +157,7 @@ class LineageDocServiceHttpTest {
             "    \"sources\": [\n" +
             "      {\n" +
             "        \"path\": \"/path/to/dataset\",\n" +
-            "        \"version\": 123\n" +
+            "        \"version\": 1234\n" +
             "      }\n" +
             "    ]\n" +
             "  }\n" +

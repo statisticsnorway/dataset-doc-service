@@ -9,6 +9,9 @@ public class SchemaType {
     @JsonProperty
     private String schemaType;
 
+    @JsonProperty
+    private Long timestamp;
+
     public String getSchema() {
         return schema;
     }
@@ -17,11 +20,16 @@ public class SchemaType {
         return schemaType;
     }
 
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
     private SchemaType() {
     }
 
-    public SchemaType(String schemaType, String schema) {
+    public SchemaType(String schemaType, String schema, Long timestamp) {
         this.schema = schema;
         this.schemaType = schemaType;
+        this.timestamp = timestamp;
     }
 }
