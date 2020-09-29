@@ -171,7 +171,7 @@ class LineageDocServiceHttpTest {
             "      {\n" +
             "        \"name\": \"userId\",\n" +
             "        \"type\": \"inherited\",\n" +
-            "        \"confidence\": 0.9,\n" +
+            "        \"confidence\": 0.8999999761581421,\n" +
             "        \"sources\": [\n" +
             "          {\n" +
             "            \"field\": \"userId\",\n" +
@@ -183,7 +183,7 @@ class LineageDocServiceHttpTest {
             "      {\n" +
             "        \"name\": \"name\",\n" +
             "        \"type\": \"inherited\",\n" +
-            "        \"confidence\": 0.9,\n" +
+            "        \"confidence\": 0.8999999761581421,\n" +
             "        \"sources\": [\n" +
             "          {\n" +
             "            \"field\": \"name\",\n" +
