@@ -1,0 +1,108 @@
+{
+  "name" : "",
+  "description" : "",
+  "unitType" : {
+    "concept-type" : "UnitType",
+    "selected-id" : "UnitType_DUMMY",
+    "candidates" : [ {
+      "id" : "UnitType_DUMMY",
+      "name" : "UnitType_default"
+    }, {
+      "id" : "some-id-could-be-guid",
+      "name" : "Heltall"
+    } ]
+  },
+  "instanceVariables" : [ {
+    "name" : "userId",
+    "description" : "",
+    "dataStructureComponentType" : {
+      "selected-enum" : "MEASURE",
+      "enums" : [ "IDENTIFIER", "MEASURE", "ATTRIBUTE" ]
+    },
+    "representedVariable" : {
+      "concept-type" : "RepresentedVariable",
+      "selected-id" : "RepresentedVariable_DUMMY",
+      "candidates" : [ {
+        "id" : "RepresentedVariable_DUMMY",
+        "name" : "RepresentedVariable_default"
+      }, {
+        "id" : "some-id-could-be-guid",
+        "name" : "NationalFamilyIdentifier"
+      } ]
+    },
+    "population" : {
+      "concept-type" : "Population",
+      "selected-id" : "Population_DUMMY",
+      "candidates" : [ {
+        "id" : "Population_DUMMY",
+        "name" : "Population_default"
+      }, {
+        "id" : "some-id-could-be-guid",
+        "name" : "All families 2018-01-01"
+      } ]
+    },
+    "sentinelValueDomain" : {
+      "concept-type" : "EnumeratedValueDomain,DescribedValueDomain",
+      "selected-id" : "ValueDomain_DUMMY",
+      "candidates" : [ {
+        "id" : "DescribedValueDomain_DUMMY",
+        "name" : "DescribedValueDomain_default"
+      }, {
+        "id" : "EnumeratedValueDomain_DUMMY",
+        "name" : "EnumeratedValueDomain_default"
+      }, {
+        "id" : "ValueDomain_DUMMY",
+        "name" : "ValueDomain_default"
+      }, {
+        "id" : "some-id-could-be-guid",
+        "name" : "Heltall"
+      } ]
+    }
+  }, {
+    "name" : "name",
+    "description" : "",
+    "dataStructureComponentType" : {
+      "selected-enum" : "MEASURE",
+      "enums" : [ "IDENTIFIER", "MEASURE", "ATTRIBUTE" ]
+    },
+    "representedVariable" : {
+      "concept-type" : "RepresentedVariable",
+      "selected-id" : "RepresentedVariable_DUMMY",
+      "candidates" : [ {
+        "id" : "RepresentedVariable_DUMMY",
+        "name" : "RepresentedVariable_default"
+      }, {
+        "id" : "some-id-could-be-guid",
+        "name" : "NationalFamilyIdentifier"
+      } ]
+    },
+    "population" : {
+      "concept-type" : "Population",
+      "selected-id" : "Population_DUMMY",
+      "candidates" : [ {
+        "id" : "Population_DUMMY",
+        "name" : "Population_default"
+      }, {
+        "id" : "some-id-could-be-guid",
+        "name" : "All families 2018-01-01"
+      } ]
+    },
+    "sentinelValueDomain" : {
+      "concept-type" : "EnumeratedValueDomain,DescribedValueDomain",
+      "selected-id" : "ValueDomain_DUMMY",
+      "candidates" : [ {
+        "id" : "DescribedValueDomain_DUMMY",
+        "name" : "DescribedValueDomain_default"
+      }, {
+        "id" : "EnumeratedValueDomain_DUMMY",
+        "name" : "EnumeratedValueDomain_default"
+      }, {
+        "id" : "ValueDomain_DUMMY",
+        "name" : "ValueDomain_default"
+      }, {
+        "id" : "some-id-could-be-guid",
+        "name" : "Heltall"
+      } ]
+    }
+  } ]
+}

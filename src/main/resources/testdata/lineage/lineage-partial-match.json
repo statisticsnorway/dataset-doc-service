@@ -1,0 +1,66 @@
+{
+  "lineage": {
+    "name": "spark_schema",
+    "type": "structure",
+    "fields": [
+      {
+        "name": "fnr",
+        "type": "inherited",
+        "confidence": 0.8999999761581421,
+        "sources": [
+          {
+            "field": "fnr",
+            "path": "/kilde/skatt/konto/innskudd",
+            "version": 123456789
+          },
+          {
+            "field": "fnr",
+            "path": "/kilde/freg/alder",
+            "version": 123456789
+          }
+        ]
+      },
+      {
+        "name": "sum_innskudd",
+        "type": "",
+        "type_candidates": [
+          "created",
+          "derived"
+        ],
+        "confidence": 0.6000000238418579,
+        "sources": [
+          {
+            "field_candidates": [
+              "konto.innskudd"
+            ],
+            "field": "",
+            "path": "/kilde/skatt/konto/innskudd",
+            "version": 123456789
+          }
+        ]
+      },
+      {
+        "name": "alder",
+        "type": "inherited",
+        "confidence": 0.8999999761581421,
+        "sources": [
+          {
+            "field": "person.alder",
+            "path": "/kilde/freg/alder",
+            "version": 123456789
+          }
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "path": "/kilde/skatt/konto/innskudd",
+        "version": 123456789
+      },
+      {
+        "path": "/kilde/freg/alder",
+        "version": 123456789
+      }
+    ]
+  }
+}

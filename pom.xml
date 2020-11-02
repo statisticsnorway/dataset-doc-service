@@ -122,9 +122,19 @@
             <artifactId>helidon-webclient</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.ssb.dapla</groupId>
-            <artifactId>dataset-doc</artifactId>
-            <version>0.4</version>
+            <groupId>no.ssb.avro.convert.core</groupId>
+            <artifactId>avro-buddy-core</artifactId>
+            <version>0.0.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro</artifactId>
+            <version>1.9.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.5</version>
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
@@ -155,6 +165,12 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.skyscreamer</groupId>
+            <artifactId>jsonassert</artifactId>
+            <version>1.5.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

@@ -1,0 +1,12 @@
+{
+  "lineage": {
+    "name": "spark_schema",
+    "type": "structure",
+    "sources": [
+      {
+        "path": "/kilde/skatt",
+        "version": 123456789
+      }
+    ]
+  }
+}

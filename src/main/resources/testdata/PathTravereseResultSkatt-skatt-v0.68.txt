@@ -1,0 +1,544 @@
+SkattemeldingUtflatet
+ |-- aksjeIAksjonaerregisteret
+ |    |-- selskapetsNavn
+ |    |-- selskapetsOrganisasjonsnummer
+ |    |-- aksjeklasse
+ |    |-- isinnummer
+ |    |-- antallAksjer
+ |    |-- verdiFoerVerdsettingsrabattForAksje
+ |    |-- skattepliktigUtbytte
+ |    |-- skattepliktigGevinstVedRealisasjonAvAksje
+ |    |-- skattepliktigTapVedRealisasjonAvAksje
+ |    |-- benyttetSkjermingsfradragPaaUtbytte
+ |    |-- benyttetSkjermingsfradragPaaGevinstVedRealisasjonAvAksje
+ |    |-- overfoertFraBarn
+ |-- aksjeIkkeIAksjonaerregisteret
+ |    |-- landkode
+ |    |-- kontofoerersNavn
+ |    |-- kontonummer
+ |    |-- selskapetsNavn
+ |    |-- selskapetsOrganisasjonsnummer
+ |    |-- finansproduktidentifikator
+ |    |-- finansproduktidentifikatortype
+ |    |-- antallAksjer
+ |    |-- verdiFoerVerdsettingsrabattForAksje
+ |    |-- skattepliktigUtbytte
+ |    |-- skattepliktigGevinstVedRealisasjonAvAksje
+ |    |-- skattepliktigTapVedRealisasjonAvAksje
+ |    |-- benyttetSkjermingsfradrag
+ |    |-- overfoertFraBarn
+ |-- aksjesparekonto
+ |    |-- navn
+ |    |-- organisasjonsnummer
+ |    |-- landkode
+ |    |-- kontonummer
+ |    |-- verdiFoerVerdsettingsrabattForAksjedel
+ |    |-- formuesverdiForKontanter
+ |    |-- skattepliktigTapVedRealisasjon
+ |    |-- skattepliktigGevinstVedRealisasjon
+ |    |-- benyttetSkjermingsfradrag
+ |    |-- finansprodukt
+ |    |    |-- isinnummer
+ |    |    |-- finansproduktetsNavn
+ |    |    |-- antall
+ |    |-- overfoertFraBarn
+ |-- andelAvInntektFelleskostnaderFormueOgGjeldIBoligsameie
+ |    |-- andelAvFellesgjeldIBoligsameie
+ |    |-- andelAvAnnenFormueIBoligsameie
+ |    |-- navn
+ |    |-- organisasjonsnummer
+ |    |-- andelAvInntektIBoligsameie
+ |    |-- andelAvAndreFradragsberettigedeKostnaderIBoligsameie
+ |    |-- overfoertFraBarn
+ |    |-- landkode
+ |-- andelAvInntektFelleskostnaderFormueOgGjeldIBoligselskap
+ |    |-- andelAvFellesgjeldIBoligselskap
+ |    |-- andelAvAnnenFormueIBoligselskap
+ |    |-- navn
+ |    |-- organisasjonsnummer
+ |    |-- andelAvInntektIBoligselskap
+ |    |-- andelAvAndreFradragsberettigedeKostnaderIBoligselskap
+ |    |-- overfoertFraBarn
+ |    |-- landkode
+ |-- annenFormue
+ |    |-- landkode
+ |    |-- formuesverdiForAnnenFormue
+ |    |-- beskrivelse
+ |    |-- overfoertFraBarn
+ |-- annenInntekt
+ |    |-- landkode
+ |    |-- inntekt
+ |    |-- beskrivelse
+ |    |-- overfoertFraBarn
+ |-- annetFinansprodukt
+ |    |-- landkode
+ |    |-- finansproduktetsNavn
+ |    |-- kontofoerersNavn
+ |    |-- kontonummer
+ |    |-- finansprodukttype
+ |    |-- finansproduktidentifikator
+ |    |-- finansproduktidentifikatortype
+ |    |-- antallAndreFinansprodukter
+ |    |-- formuesverdiForAnnetFinansprodukt
+ |    |-- skattepliktigGevinstVedRealisasjonAvAnnetFinansprodukt
+ |    |-- skattepliktigTapVedRealisasjonAvAnnetFinansprodukt
+ |    |-- gjeldPaaAnnetFinansprodukt
+ |    |-- annenSkattepliktigKapitalinntektFraAnnetFinansprodukt
+ |    |-- overfoertFraBarn
+ |-- arbeidsoppholdUtenforHjemmet
+ |    |-- pendleropphold
+ |    |    |-- arbeidsgiver
+ |    |    |-- losjitypeForPendleropphold
+ |    |    |-- oppstartsdatoForPendleropphold
+ |    |    |-- stedForPendleropphold
+ |    |    |    |-- sted
+ |    |    |    |-- kommunenummer
+ |    |    |    |-- landkode
+ |    |    |-- arbeidssted
+ |    |    |    |-- sted
+ |    |    |    |-- kommunenummer
+ |    |    |    |-- landkode
+ |    |    |-- antallOvernattingsdoegn
+ |    |    |-- kreverFradragForDokumenterteKostnaderTilKost
+ |    |    |-- dokumenterteKostnaderTilKost
+ |    |    |-- mottarKostgodtgjoerelseLavereEnnSats
+ |    |    |-- dokumenterteKostnaderTilKostUtoverMottattKostgodtgjoerelse
+ |    |    |-- harGratisKostOgBesoeksreiserPaa6TimerEllerLenger
+ |    |    |-- antallBesoeksreiser
+ |    |    |-- dokumenterteKostnaderTilLosji
+ |    |    |-- kreverFradragForLosjiEtterSats
+ |    |    |-- kostnaderTilLeieAvCampingplass
+ |    |    |-- beregnetKostnadForKostOgLosjiForPendleropphold
+ |    |    |-- dokumenterteSmaautgifter
+ |    |-- oppholdUnderKjoereoppdrag
+ |    |    |-- arbeidsgiver
+ |    |    |-- antallOvernattingsdoegn
+ |    |    |-- kreverFradragForDokumenterteKostnaderTilKost
+ |    |    |-- dokumenterteKostnaderTilKost
+ |    |    |-- mottarKostgodtgjoerelseLavereEnnSats
+ |    |    |-- dokumenterteKostnaderTilKostUtoverMottattKostgodtgjoerelse
+ |    |    |-- dokumenterteKostnaderTilLosji
+ |    |    |-- beregnetKostnadForKostOgLosjiForOppholdUnderKjoereoppdrag
+ |    |-- fradragForMerkostnadVedArbeidsoppholdUtenforHjemmet
+ |    |-- oppholdUnderYrkesOgTjenestereise
+ |    |    |-- arbeidsgiver
+ |    |    |-- losjitypeForOppholdUnderYrkesOgTjenestereise
+ |    |    |-- oppholdssted
+ |    |    |    |-- sted
+ |    |    |    |-- kommunenummer
+ |    |    |    |-- landkode
+ |    |    |-- antallOvernattingsdoegn
+ |    |    |-- kreverFradragForDokumenterteKostnaderTilKost
+ |    |    |-- dokumenterteKostnaderTilKost
+ |    |    |-- mottarKostgodtgjoerelseLavereEnnSats
+ |    |    |-- dokumenterteKostnaderTilKostUtoverMottattKostgodtgjoerelse
+ |    |    |-- dokumenterteKostnaderTilLosji
+ |    |    |-- kreverFradragForLosjiEtterSats
+ |    |    |-- kostnaderTilLeieAvCampingplass
+ |    |    |-- dokumenterteSmaautgifter
+ |    |    |-- beregnetKostnadForKostOgLosjiForOppholdUnderYrkesOgTjenestereise
+ |-- reiserIArbeidsforhold
+ |    |-- reisefradrag
+ |    |-- sparerMerEnnToTimerVedBrukAvEgenBil
+ |    |-- bompengeutgift
+ |    |-- fergeutgift
+ |    |-- utgiftTilFlybilletterForBesoeksreiserTilHjemmet
+ |    |-- kreverFradragForDokumenterteKostnader
+ |    |-- dokumenterteKostnaderTilArbeidsOgBesoeksreiser
+ |    |-- reiseIArbeidsforhold
+ |    |    |-- klassifiseringAvReiseIArbeidsforhold
+ |    |    |-- antallReiser
+ |    |    |-- lengdeAvReiseTurRetur
+ |    |    |-- reiseFraAdresse
+ |    |    |-- reiseFraSted
+ |    |    |-- reiseTilAdresse
+ |    |    |-- reiseTilSted
+ |    |    |-- kreverAvstandsfradragVedBrukAvEgenBilForBesoeksreiseTilHjemmetUtenforEOeS
+ |    |    |-- reisenErDekketAvArbeidsgiver
+ |    |    |-- egenandelVedReiseDekketAvArbeidsgiver
+ |    |    |-- kostnaderVedBesoeksreiseTilHjemmetUtenforEOeS
+ |-- boligsparingForUngdom
+ |    |-- samletSparebeloepTilBoligsparingForUngdomOppspartISkattleggingsperioden
+ |    |-- tilleggIBeregnetSkattVedVilkaarsbruddForBoligsparingForUngdom
+ |-- fastEiendom
+ |    |-- internEiendomsidentifikator
+ |    |-- SERGEiendomsidentifikator
+ |    |-- poststedsnavn
+ |    |-- postnummer
+ |    |-- gateadresse
+ |    |-- husnummer
+ |    |-- husbokstav
+ |    |-- bruksenhetsnummer
+ |    |-- landkode
+ |    |-- navn
+ |    |-- eierandel
+ |    |-- bruksnavn
+ |    |-- kommunenummer
+ |    |-- gaardsnummer
+ |    |-- bruksnummer
+ |    |-- festenummer
+ |    |-- seksjonsnummer
+ |    |-- boligselskapetsOrganisasjonsnummer
+ |    |-- boligselskapetsNavn
+ |    |-- aksjeboenhetsnummer
+ |    |-- andelsnummer
+ |    |-- boligsameietsOrganisasjonsnummer
+ |    |-- boligsameietsNavn
+ |    |-- erEierskifteTinglyst
+ |    |-- datoForOverdragelse
+ |-- fastEiendomSomUtleieobjekt
+ |    |-- bruttoLeieinntektVedSjablongbehandletUtleie
+ |    |-- bruttoLeieinntektVedRegnskapsbehandletUtleie
+ |    |-- festeavgiftVedUtleie
+ |    |-- vedlikeholdskostnadVedUtleie
+ |    |-- annenKostnadVedUtleie
+ |    |-- husleieFelleskostnadVedUtleie
+ |    |-- benytterEiendommenSelvSomFritidseiendom
+ |    |-- utleietype
+ |    |-- landkode
+ |    |-- saldoavskrivningAvInnbo
+ |    |-- andelAvNettoLeieinntektEllerUnderskudd
+ |    |-- internEiendomsidentifikator
+ |-- fastEiendomSomFormuesobjekt
+ |    |-- landkode
+ |    |-- formuesverdi
+ |    |-- beregnetMarkedsverdiForBolig
+ |    |-- andelAvFormuesverdi
+ |    |-- boligbruk
+ |    |-- eiendomstype
+ |    |-- dokumentertMarkedsverdiForBolig
+ |    |-- boligtype
+ |    |-- boligensAreal
+ |    |-- byggeaar
+ |    |-- formueSkalIkkeFastsettes
+ |    |-- internEiendomsidentifikator
+ |    |-- overfoertFraBarn
+ |-- fagforeningskontingent
+ |    |-- samletBetaltFagforeningskontingentPerSkattleggingsperiode
+ |-- fondskonto
+ |    |-- organisasjonsnummer
+ |    |-- forsikringsselskapetsNavn
+ |    |-- kontonummer
+ |    |-- skattepliktigGevinstVedRealisasjonAvOgUttakFraAksjedel
+ |    |-- skattepliktigTapVedRealisasjonAvOgUttakFraAksjedel
+ |    |-- skattepliktigGevinstVedRealisasjonAvOgUttakFraRentedel
+ |    |-- skattepliktigTapVedRealisasjonAvOgUttakFraRentedel
+ |    |-- verdiFoerVerdsettingsrabattForAksjeOgAksjefond
+ |    |-- formuesverdiForKontanterMv
+ |    |-- skattefrittUttak
+ |    |-- benyttetSkjermingsfradrag
+ |    |-- overfoertFraBarn
+ |-- foreldrefradrag
+ |    |-- antallBarn
+ |    |-- totaltForeldrefradrag
+ |    |-- andelAvForeldrefradragProsent
+ |    |-- andelAvForeldrefradragBeloep
+ |    |-- andelAvForeldrefradragTilordnetEktefelle
+ |    |-- barnSomGirRettTilForeldrefradrag
+ |    |    |-- navn
+ |    |    |-- personidentifikator
+ |-- forvaltningskostnader
+ |    |-- aarsavgiftIVPS
+ |    |-- leiekostnaderForBankboks
+ |    |-- forvaltningskostnaderForVerdipapirer
+ |-- fritidsbaatMedSalgsverdiOverSalgsverdigrense
+ |    |-- baatmerke
+ |    |-- grunnlagForFormuesverdiForFritidsbaatMedSalgsverdiOverSalgsverdigrense
+ |    |-- antattSalgsverdi
+ |    |-- forsikringssum
+ |    |-- formuesverdiForFritidsbaatMedSalgsverdiOverSalgsverdigrense
+ |    |-- overfoertFraBarn
+ |    |-- landkode
+ |-- gaveOgArv
+ |    |-- fradragForPengetilskudd
+ |    |-- gaveTilFrivilligOrganisasjon
+ |    |    |-- navnGodkjentGavemottaker
+ |    |    |-- organisasjonsnummerGodkjentGavemottaker
+ |    |    |-- beloep
+ |    |    |-- overfoertFraBarn
+ |    |    |-- landkode
+ |    |-- skattefriGevinstFraSpillEllerTiltakArrangertAvMassemedia
+ |    |    |-- beloep
+ |    |    |-- landkode
+ |    |-- samletVerdiArvEllerGaveUtenforArbeidsforhold
+ |    |    |-- beloep
+ |    |    |-- landkode
+ |    |-- tilskuddTilVitenskapeligForskning
+ |    |    |-- godkjentInstituttsOrganisasjonsnavn
+ |    |    |-- godkjentInstituttsOrganisasjonsnummer
+ |    |    |-- pengetilskudd
+ |-- grunnlagForSkattefradragForPensjonsinntekt
+ |    |-- gjennomsnittligVektetPensjonsgrad
+ |    |-- harKravPaaSkattefradragForPensjon
+ |    |-- samletPensjonsinntekt
+ |    |-- antallMaanederMedPensjon
+ |-- individuellPensjonsordning
+ |    |-- landkode
+ |    |-- pensjonsordningstype
+ |    |-- oppgavegiverPensjonsinnbetalingersOrganisasjonsnummer
+ |    |-- oppgavegiverPensjonsinnbetalingersNavn
+ |    |-- innbetalingTilIndividuellPensjonsordningPerSkattleggingsperiode
+ |    |-- kapitalinntektFraIndividuellPensjonsordningPerSkattleggingsperiode
+ |    |-- returAvPremie
+ |    |-- premiefond
+ |-- investeringIOppstartsselskap
+ |    |-- fradragForInvesteringIOppstartsselskap
+ |    |-- oppstartselskapOrganisasjonsnummer
+ |-- kjoeretoey
+ |    |-- registreringsnummer
+ |    |-- fabrikatnavn
+ |    |-- aarForFoerstegangsregistrering
+ |    |-- formuesverdi
+ |    |-- antattVerdiSomNytt
+ |    |-- antattMarkedsverdi
+ |    |-- overfoertFraBarn
+ |    |-- landkode
+ |-- kontantbeloep
+ |    |-- beloep
+ |-- konto
+ |    |-- bankensNavn
+ |    |-- organisasjonsnummer
+ |    |-- kontonummer
+ |    |-- erBoligsparekontoIAnnenEOeSStat
+ |    |-- innskudd
+ |    |-- opptjenteRenter
+ |    |-- gjeld
+ |    |-- paaloepteRenter
+ |    |-- tilbakefoerteRenter
+ |    |-- betalteMisligholdteRenter
+ |    |-- tapValutalaan
+ |    |-- gevinstValutalaan
+ |    |-- sparebeloepTilBoligsparingForUngdomOppspartISkattleggingsperioden
+ |    |-- landkode
+ |    |-- overfoertFraBarn
+ |    |-- andelOverfoert
+ |-- kostnaderForMerkjoeringForAaBringeOgHenteBarn
+ |    |-- stedForBarnepass
+ |    |-- faktiskKostnad
+ |    |-- antallReiserMedMerkjoering
+ |    |-- lengdeAvMerkjoering
+ |    |-- landkode
+ |-- livsforsikring
+ |    |-- livsforsikringsselskapetsNavn
+ |    |-- organisasjonsnummer
+ |    |-- forsikringsnummer
+ |    |-- fradragsberettigetTapPaaLivsforsikring
+ |    |-- skattepliktigEngangsutbetalingFraLivrente
+ |    |-- skattepliktigTerminutbetalingFraLivrente
+ |    |-- skattepliktigEngangsutbetalingFraUfoererente
+ |    |-- renteinntektAvLivsforsikring
+ |    |-- skattepliktigUtbetalingFraKapitalforsikringUtenGarantertAvkastning
+ |    |-- avkastningAvKapitalforsikringsavtale
+ |    |-- premiefond
+ |    |-- gjenkjoepsverdiAvKapitalforsikringsavtale
+ |    |-- gjenkjoepsverdiAvIndividuellLivrente
+ |    |-- overfoertFraBarn
+ |-- loennOgTilsvarendeYtelser
+ |    |-- landkode
+ |    |-- arbeidsgiversNavn
+ |    |-- samledeYtelserFraArbeidsgiverPerBehandlingsart
+ |    |    |-- beloep
+ |    |    |-- antall
+ |    |    |-- overskuddAvUtgiftsgodtgjoerelse
+ |    |    |-- behandlingsart
+ |    |    |-- erLoennFraDenNorskeStat
+ |    |-- organisasjonsnummer
+ |    |-- overfoertFraBarn
+ |-- minstefradragOgKostnader
+ |    |-- landkode
+ |    |-- fastsattFradragstype
+ |    |-- minstefradragIInntekt
+ |    |-- fradragForKostnaderKnyttetTilArbeid
+ |    |-- kostnaderKnyttetTilArbeid
+ |    |-- kostnaderKnyttetTilAnnenInntekt
+ |    |-- kostnaderUtenFradragsrett
+ |    |-- kostnad
+ |    |    |-- beloep
+ |    |    |-- kostnadstype
+ |    |    |-- beskrivelse
+ |-- mottattUnderholdsbidrag
+ |    |-- beloep
+ |    |-- bidragsytersNavn
+ |    |-- bidragsytersFoedselsnummer
+ |    |-- rapporterendeEnhetsOrganisasjonsnummer
+ |    |-- rapporterendeEnhetsNavn
+ |-- nettoLeieinntektEllerUnderskuddFraFastEiendomSomUtleieobjektOverfoertFraEktefelle
+ |    |-- landkode
+ |    |-- kommunenummer
+ |    |-- nettoLeieinntekt
+ |    |-- underskudd
+ |-- personligeForhold
+ |    |-- kravOmKreditfradrag
+ |    |    |-- fremfoertUtenlandskSkattPerInntektsaar
+ |    |    |    |-- inntektsaar
+ |    |    |    |-- fremfoertUtenlandskFormuesskatt
+ |    |    |    |-- fremfoertUtenlandskInntektsskatt
+ |    |    |-- kravOmKreditfradragForUtenlandskSkattPrLand
+ |    |    |    |-- landkode
+ |    |    |    |-- kravOmKreditfradragForUtenlandskFormuesskatt
+ |    |    |    |-- kravOmKreditfradragForUtenlandskInntektsskatt
+ |    |    |    |-- skattBetaltPaaAksjeutbytteMottattFraUtenlandskSelskap
+ |    |    |    |-- bruttoAksjeutbytteMottattFraUtenlandskSelskap
+ |    |-- skattebegrensningVedLavAlminneligInntekt
+ |    |    |-- vurderesForSkattebegrensningParagraf174LitenSkatteevne
+ |    |    |-- vurderesForSkattebegrensningParagraf171LavAlminneligInntekt
+ |    |-- fradragDirekteTilordnetInntektFraUtlandetKreditfradrag
+ |    |    |-- minstefradragIInntektTilordnetUtlandet
+ |    |    |-- kostnaderKnyttetTilArbeidTilordnetUtlandet
+ |    |    |-- merkostnaderVedArbeidsoppholdUtenforHjemmetTilordnetUtlandet
+ |    |    |-- kostnaderKnyttetTilArbeidsOgBesoeksreiserTilordnetUtlandet
+ |    |    |-- fagforeningskontingentTilordnetUtlandet
+ |    |    |-- pensjonsinnbetalingTilPensjonsordningTilordnetUtlandet
+ |    |    |-- tapVedRealisasjonAvFastEiendomTilordnetUtlandet
+ |    |    |-- tapVedRealisasjonAvVerdipapirTilordnetUtlandet
+ |    |    |-- underskuddVedUtleieAvFastEiendomTilordnetUtlandet
+ |    |-- fradragIndirekteTilordnetUtlandetKreditfradrag
+ |    |    |-- foreldrefradragTilordnetUtlandet
+ |    |    |-- betaltUnderholdsbidragTilordnetUtlandet
+ |    |    |-- fradragForIndividuellSparingTilPensjonTilordnetUtlandet
+ |    |    |-- andreFradragTilordnetUtlandet
+ |    |    |-- saerfradragForEnsligForsoergerTilordnetUtlandet
+ |    |    |-- gjeldsrenterTilordnetUtlandet
+ |    |-- skattebegrensningVedLitenSkatteevne
+ |    |    |-- vurderesForSkattebegrensningParagraf174LitenSkatteevne
+ |    |    |-- rettTilSkattebegrensningParagraf174LitenSkatteevneForegaaendeAar
+ |    |-- fremfoertUnderskuddFraTidligereAar
+ |    |-- fradragDirekteTilordnetInntektFraUtlandetAlternativFordelingsmetode
+ |    |    |-- minstefradragIInntektTilordnetUtlandet
+ |    |    |-- kostnaderKnyttetTilArbeidTilordnetUtlandet
+ |    |    |-- merkostnaderVedArbeidsoppholdUtenforHjemmetTilordnetUtlandet
+ |    |    |-- kostnaderKnyttetTilArbeidsOgBesoeksreiserTilordnetUtlandet
+ |    |    |-- fagforeningskontingentTilordnetUtlandet
+ |    |    |-- pensjonsinnbetalingTilPensjonsordningTilordnetUtlandet
+ |    |-- fradragIndirekteTilordnetUtlandetAlternativFordelingsmetode
+ |    |    |-- foreldrefradragTilordnetUtlandet
+ |    |    |-- betaltUnderholdsbidragTilordnetUtlandet
+ |    |    |-- fradragForIndividuellSparingTilPensjonTilordnetUtlandet
+ |    |    |-- andreFradragTilordnetUtlandet
+ |    |    |-- saerfradragForEnsligForsoergerTilordnetUtlandet
+ |-- obligasjonOgSertifikat
+ |    |-- landkode
+ |    |-- rentepapiretsNavn
+ |    |-- kontofoerersNavn
+ |    |-- kontonummer
+ |    |-- finansproduktidentifikator
+ |    |-- finansproduktidentifikatortype
+ |    |-- antallObligasjonerOgSertifikater
+ |    |-- formuesverdiForObligasjonOgSertifikat
+ |    |-- renteinntektAvObligasjonOgSertifikat
+ |    |-- skattepliktigGevinstVedRealisasjonAvObligasjonOgSertifikat
+ |    |-- skattepliktigTapVedRealisasjonAvObligasjonOgSertifikat
+ |    |-- overfoertFraBarn
+ |-- oppholdskostnaderVedPassOgStellAvBarn
+ |    |-- betaltBeloep
+ |    |-- navnBarnepassvirksomhet
+ |    |-- organisasjonsnummer
+ |    |-- landkode
+ |-- pensjonsinntekt
+ |    |-- landkode
+ |    |-- beloepPrSkattleggingsperiode
+ |    |-- pensjonsutbetalersNavn
+ |    |-- organisasjonsnummer
+ |    |-- pensjonstype
+ |    |-- behandlingsart
+ |    |-- pensjonsinntektPerMaaned
+ |    |    |-- beloep
+ |    |    |-- kalendermaaned
+ |    |    |-- pensjonsgrad
+ |-- pensjonspremierIArbeidsforhold
+ |    |-- landkode
+ |    |-- samletPensjonsinnbetalingTilPensjonsordningIArbeidsforholdPerSkattleggingsperiode
+ |-- privatFordringUtenforVirksomhet
+ |    |-- formuesverdi
+ |    |-- opptjenteRenter
+ |    |-- landkode
+ |-- privatGjeldsforholdUtenforVirksomhet
+ |    |-- fordringshaver
+ |    |-- organisasjonsnummer
+ |    |-- gjeld
+ |    |-- paaloepteRenter
+ |    |-- landkode
+ |-- realisasjonAvFastEiendom
+ |    |-- landkode
+ |    |-- gevinstVedRealisasjonAvFastEiendom
+ |    |-- tapVedRealisasjonAvFastEiendom
+ |    |-- internEiendomsidentifikator
+ |    |-- overfoertFraBarn
+ |-- skadeforsikring
+ |    |-- skadeforsikringsselskapetsNavn
+ |    |-- organisasjonsnummer
+ |    |-- skadenummer
+ |    |-- renteinntektAvSkadeforsikring
+ |    |-- utbetalingFraSkadeforsikring
+ |    |-- annenUtbetalingFraSkadeforsikring
+ |    |-- returAvPremieFraSkadeforsikring
+ |    |-- dagpengerVedSykehusoppholdMvFraBarneforsikring
+ |    |-- overfoertFraBarn
+ |-- skattefriStoenadTilBarnetilsyn
+ |    |-- beloep
+ |-- skattepliktigKundeutbytteUtenforVirksomhetPerUtbetaler
+ |    |-- utbetaltBeloep
+ |    |-- navn
+ |    |-- organisasjonsnummer
+ |    |-- overfoertFraBarn
+ |-- skyldigRestskatt
+ |    |-- betalteForsinkelsesrenterForSamletSkyldigRestskatt
+ |    |-- samletSkyldigRestskatt
+ |-- saerfradragForEnsligForsoerger
+ |    |-- antallMaanederMedHelUtvidetBarnetrygd
+ |    |-- andelAvSaerfradragForEnsligForsoergerFraHelUtvidetBarnetrygd
+ |    |-- antallMaanederMedDeltUtvidetBarnetrygd
+ |    |-- andelAvSaerfradragForEnsligForsoergerFraDeltUtvidetBarnetrygd
+ |    |-- saerfradragForEnsligForsoerger
+ |    |-- utvidetBarnetrygd
+ |    |    |-- ytelsesgrad
+ |    |    |-- antallMaaneder
+ |    |    |-- fraOgMedMaaned
+ |    |    |-- tilOgMedMaaned
+ |-- verdiForAnnetPrivatInnboOgLoesoere
+ |    |-- beloep
+ |    |-- andelAvFribeloep
+ |    |-- landkode
+ |-- underholdsbidragBetaltSkyldigOgTilGode
+ |    |-- betaltUnderholdsbidrag
+ |    |-- skyldigUnderholdsbidrag
+ |    |-- underholdsbidragTilGode
+ |    |-- bidragsmottakersNavn
+ |    |-- bidragsmottakersFoedselsnummer
+ |    |-- rapporterendeEnhetsNavn
+ |    |-- rapporterendeEnhetsOrganisasjonsnummer
+ |-- verdipapirfond
+ |    |-- fondetsNavn
+ |    |-- fondetsOrganisasjonsnummer
+ |    |-- isinnummer
+ |    |-- landkode
+ |    |-- antallAndeler
+ |    |-- skattepliktigUtbytte
+ |    |-- skattepliktigRenteinntekt
+ |    |-- verdiFoerVerdsettingsrabattForAndelIAksjedel
+ |    |-- skattepliktigGevinstVedRealisasjonAvAndelIAksjedel
+ |    |-- skattepliktigTapVedRealisasjonAvAndelIAksjedel
+ |    |-- formuesverdiForAndelIRentedel
+ |    |-- skattepliktigGevinstVedRealisasjonAvAndelIRentedel
+ |    |-- skattepliktigTapVedRealisasjonAvAndelIRentedel
+ |    |-- benyttetSkjermingsfradragPaaUtbytte
+ |    |-- benyttetSkjermingsfradragPaaGevinstVedRealisasjonAvAndel
+ |    |-- erReselgeroppgave
+ |    |-- oppgavegiversOrganisasjonsnummer
+ |    |-- oppgavegiversNavn
+ |    |-- overfoertFraBarn
+ |-- virtuellValuta
+ |    |-- virtuellValutanavn
+ |    |-- kontonummer
+ |    |-- antall
+ |    |-- formuesverdiForVirtuellValuta
+ |    |-- skattepliktigGevinstVedRealisasjonAvVirtuellValuta
+ |    |-- skattepliktigTapVedRealisasjonAvVirtuellValuta
+ |    |-- annenSkattepliktigKapitalinntektFraVirtuellValuta
+ |    |-- gjelderFlereVirtuelleValutaer
+ |    |-- landkode
+ |    |-- overfoertFraBarn
+ |-- personidentifikator
+ |-- inntektsaar
+ |-- skjermet
+ |-- registreringstidspunkt

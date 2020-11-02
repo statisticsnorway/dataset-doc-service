@@ -14,6 +14,8 @@ import io.helidon.webclient.WebClientResponse;
 import io.helidon.webserver.WebServer;
 import no.ssb.dapla.dataset.doc.service.model.SchemaType;
 import no.ssb.dapla.dataset.doc.service.model.SchemaWithDependencies;
+import no.ssb.dapla.dataset.doc.service.model.TemplateValidationResult;
+import no.ssb.dapla.dataset.doc.service.model.ValidateTemplateOptions;
 import org.apache.avro.Schema;
 import org.apache.avro.SchemaBuilder;
 import org.apache.commons.collections.map.SingletonMap;
@@ -28,6 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
@@ -76,7 +80,15 @@ class LineageDocServiceHttpTest {
         }
     }
 
-    WebClientResponse getWebClientResponse(String json) {
+    WebClientResponse getWebClientTemplateResponse(String json) {
+        return getWebClientTemplateResponse(json, "/lineage/template");
+    }
+
+    WebClientResponse getWebClientValidateResponse(String json) {
+        return getWebClientTemplateResponse(json, "/lineage/validate");
+    }
+
+    private WebClientResponse getWebClientTemplateResponse(String json, String path) {
         WebClient webClient = WebClient.builder()
                 .baseUri("http://localhost:" + webServer.port())
                 .addMediaSupport(DefaultMediaSupport.create())
@@ -84,9 +96,10 @@ class LineageDocServiceHttpTest {
                 .build();
 
         return webClient.post()
-                .path("/lineage/template")
+                .path(path)
                 .submit(json).toCompletableFuture().join();
     }
+
 
     @Test
     void thatWeCanPostSparkSchemaAndGetSimpleTemplate() throws JsonProcessingException {
@@ -109,7 +122,7 @@ class LineageDocServiceHttpTest {
                 .writeValueAsString(schemaWithDependencies);
         System.out.println(requestJson);
 
-        WebClientResponse response = getWebClientResponse(requestJson);
+        WebClientResponse response = getWebClientTemplateResponse(requestJson);
 
         Http.ResponseStatus status = response.status();
         assert status == Http.Status.OK_200;
@@ -140,7 +153,7 @@ class LineageDocServiceHttpTest {
                 .writeValueAsString(schemaWithDependencies);
         System.out.println(requestJson);
 
-        WebClientResponse response = getWebClientResponse(requestJson);
+        WebClientResponse response = getWebClientTemplateResponse(requestJson);
 
         Http.ResponseStatus status = response.status();
         assert status == Http.Status.OK_200;
@@ -149,6 +162,34 @@ class LineageDocServiceHttpTest {
         assertEquals(expected_lineage_doc, body);
 
     }
+
+    @Test
+    void thatWeCanValidateSparkSchemaAndTemplate() throws JsonProcessingException {
+        Schema schema = SchemaBuilder
+                .record("root")
+                .fields()
+                .name("userId").type().stringType().noDefault()
+                .name("name").type().optional().stringType()
+                .endRecord();
+
+        SchemaConverters.SchemaType schemaType = SchemaConverters.toSqlType(schema);
+        String schemaJson = schemaType.dataType().json();
+
+        ValidateTemplateOptions schemaWithDependencies = new ValidateTemplateOptions(expected_lineage_doc, "SPARK", schemaJson);
+        String requestJson = new ObjectMapper()
+                .writerWithDefaultPrettyPrinter()
+                .writeValueAsString(schemaWithDependencies);
+
+        WebClientResponse response = getWebClientValidateResponse(requestJson);
+
+        Http.ResponseStatus status = response.status();
+        assert status == Http.Status.OK_200;
+
+        TemplateValidationResult body = response.content().as(TemplateValidationResult.class).toCompletableFuture().join();
+        assertThat(body.getStatus()).isEqualTo("ok");
+
+    }
+
 
     static String expected_simple_lineage_doc = "{\n" +
             "  \"lineage\": {\n" +

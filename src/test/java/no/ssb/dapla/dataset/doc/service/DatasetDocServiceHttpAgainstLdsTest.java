@@ -1,7 +1,13 @@
 package no.ssb.dapla.dataset.doc.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.helidon.common.http.Http;
 import io.helidon.config.Config;
+import io.helidon.webclient.WebClientResponse;
+import no.ssb.dapla.dataset.doc.service.model.SchemaWithOptions;
+import org.apache.avro.Schema;
+import org.apache.spark.sql.avro.SchemaConverters;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -23,14 +29,41 @@ class DatasetDocServiceHttpAgainstLdsTest extends DatasetDocServiceHttpTest {
     @Test
     @Disabled
     void thatWeCanPostAvroSchemaAndGetTemplate() throws JsonProcessingException {
-        // Enable for testing against local lds
-        super.thatWeCanPostAvroSchemaAndGetTemplate();
+        Schema schema = DatasetDocServiceHttpTestHelper.getSchema();
+
+        String jsonAvroSchemaString = schema.toString();
+        SchemaWithOptions schemaWithOptions = new SchemaWithOptions(false, "AVRO", jsonAvroSchemaString);
+        String json = new ObjectMapper().writeValueAsString(schemaWithOptions);
+
+        WebClientResponse response = getWebClientResponse(json);
+
+        String body = response.content().as(String.class).toCompletableFuture().join();
+        System.out.println(body); // TODO: make test when structure is more stable
+
+        Http.ResponseStatus status = response.status();
+        assert status == Http.Status.OK_200;
     }
 
     @Test
     @Disabled
     void thatWeCanPostSparkSchemaAndGetTemplate() throws JsonProcessingException {
-        // Enable for testing against local lds
-        super.thatWeCanPostSparkSchemaAndGetTemplate();
+        Schema schema = DatasetDocServiceHttpTestHelper.getSchema();
+        SchemaConverters.SchemaType schemaType = SchemaConverters.toSqlType(schema);
+        String schemaJson = schemaType.dataType().json();
+
+        SchemaWithOptions schemaWithOptions = new SchemaWithOptions(false, "SPARK", schemaJson);
+        String optionsJson = new ObjectMapper()
+                .writerWithDefaultPrettyPrinter()
+                .writeValueAsString(schemaWithOptions);
+        System.out.println(optionsJson);
+
+        WebClientResponse response = getWebClientResponse(optionsJson);
+
+        String body = response.content().as(String.class).toCompletableFuture().join();
+        System.out.println(body); // TODO: make test when structure is more stable
+
+        Http.ResponseStatus status = response.status();
+        System.out.println(status);
+        assert status== Http.Status.OK_200;
     }
 }

@@ -1,0 +1,79 @@
+{
+  "lineage": {
+    "name": "spark_schema",
+    "type": "structure",
+    "fields": [
+      {
+        "name": "personidentifikator",
+        "type": "inherited",
+        "confidence": 0.44999998807907104,
+        "sources": [
+          {
+            "field_candidates": [
+              "SkattemeldingUtflatet.personidentifikator",
+              "SkattemeldingUtflatet.foreldrefradrag.barnSomGirRettTilForeldrefradrag.personidentifikator"
+            ],
+            "field": "",
+            "path": "/kilde/skatt",
+            "version": 123456789
+          }
+        ]
+      },
+      {
+        "name": "kontonummer",
+        "type": "inherited",
+        "confidence": 0.12857142090797424,
+        "sources": [
+          {
+            "field_candidates": [
+              "SkattemeldingUtflatet.aksjeIkkeIAksjonaerregisteret.kontonummer",
+              "SkattemeldingUtflatet.aksjesparekonto.kontonummer",
+              "SkattemeldingUtflatet.annetFinansprodukt.kontonummer",
+              "SkattemeldingUtflatet.fondskonto.kontonummer",
+              "SkattemeldingUtflatet.konto.kontonummer",
+              "SkattemeldingUtflatet.obligasjonOgSertifikat.kontonummer",
+              "SkattemeldingUtflatet.virtuellValuta.kontonummer"
+            ],
+            "field": "",
+            "path": "/kilde/skatt",
+            "version": 123456789
+          }
+        ]
+      },
+      {
+        "name": "innskudd",
+        "type": "inherited",
+        "confidence": 0.8999999761581421,
+        "sources": [
+          {
+            "field": "SkattemeldingUtflatet.konto.innskudd",
+            "path": "/kilde/skatt",
+            "version": 123456789
+          }
+        ]
+      },
+      {
+        "name": "gjeld",
+        "type": "inherited",
+        "confidence": 0.44999998807907104,
+        "sources": [
+          {
+            "field_candidates": [
+              "SkattemeldingUtflatet.konto.gjeld",
+              "SkattemeldingUtflatet.privatGjeldsforholdUtenforVirksomhet.gjeld"
+            ],
+            "field": "",
+            "path": "/kilde/skatt",
+            "version": 123456789
+          }
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "path": "/kilde/skatt",
+        "version": 123456789
+      }
+    ]
+  }
+}

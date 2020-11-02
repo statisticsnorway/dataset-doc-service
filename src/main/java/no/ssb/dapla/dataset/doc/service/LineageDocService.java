@@ -12,6 +12,10 @@ import no.ssb.dapla.dataset.doc.builder.LineageBuilder;
 import no.ssb.dapla.dataset.doc.service.model.SchemaMapper;
 import no.ssb.dapla.dataset.doc.service.model.SchemaType;
 import no.ssb.dapla.dataset.doc.service.model.SchemaWithDependencies;
+import no.ssb.dapla.dataset.doc.service.model.TemplateValidationResult;
+import no.ssb.dapla.dataset.doc.service.model.ValidateTemplateOptions;
+import no.ssb.dapla.dataset.doc.template.LineageValidator;
+import no.ssb.dapla.dataset.doc.template.ValidateResult;
 import no.ssb.dapla.dataset.doc.traverse.SchemaWithPath;
 import org.apache.avro.Schema;
 import org.slf4j.Logger;
@@ -30,6 +34,7 @@ public class LineageDocService implements Service {
     @Override
     public void update(Routing.Rules rules) {
         rules.post("/template", Handler.create(SchemaWithDependencies.class, this::createTemplate));
+        rules.post("/validate", Handler.create(ValidateTemplateOptions.class, this::validateLineage));
     }
 
     private void createTemplate(ServerRequest req, ServerResponse res, SchemaWithDependencies schemaWithDependencies) {
@@ -38,6 +43,23 @@ public class LineageDocService implements Service {
             String result = convert(avroSchema, schemaWithDependencies.getDependencies(), schemaWithDependencies.isSimpleLineage());
             res.headers().contentType(MediaType.APPLICATION_JSON);
             res.status(Http.Status.OK_200).send(result);
+        } catch (Exception e) {
+            LOG.error("error", e);
+            res.status(Http.Status.INTERNAL_SERVER_ERROR_500).send(e.getMessage());
+        }
+    }
+
+    private void validateLineage(ServerRequest req, ServerResponse res, ValidateTemplateOptions validateTemplateOptions) {
+        try {
+            Schema avroSchema = SchemaMapper.getAvroSchema(validateTemplateOptions.getSchemaType(), validateTemplateOptions.getSchema());
+            String lineageTemplate = validateTemplateOptions.getDataDocTemplate();
+
+            ValidateResult validateResult = new LineageValidator(lineageTemplate).validate(avroSchema);
+            String status = validateResult.isOk() ? "ok" : "differ";
+            TemplateValidationResult validationResult = new TemplateValidationResult(status, validateResult.getMessage());
+
+            res.headers().contentType(MediaType.APPLICATION_JSON);
+            res.status(Http.Status.OK_200).send(validationResult);
         } catch (Exception e) {
             LOG.error("error", e);
             res.status(Http.Status.INTERNAL_SERVER_ERROR_500).send(e.getMessage());
