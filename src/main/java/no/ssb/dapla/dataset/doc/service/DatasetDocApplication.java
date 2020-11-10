@@ -94,18 +94,21 @@ public class DatasetDocApplication {
     public static void main(final String[] args) {
         DatasetDocApplication app = new DatasetDocApplication(createDefaultConfig());
 
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            app.get(WebServer.class).shutdown().toCompletableFuture().join();
+            LOG.info("Shutdown complete.");
+        }));
         // Try to start the server. If successful, print some info and arrange to
         // print a message at shutdown. If unsuccessful, print the exception.
         app.get(WebServer.class).start()
                 .thenAccept(ws -> {
+                    LOG.info("WebServer running at port " + ws.port());
                     System.out.println(
                             "WEB server is up! http://" + ws.configuration().bindAddress()+ ":" + ws.port() + "/doc");
-                    ws.whenShutdown().thenRun(()
-                            -> System.out.println("WEB server is DOWN. Good bye!"));
                 })
                 .exceptionally(t -> {
-                    System.err.println("Startup failed: " + t.getMessage());
-                    t.printStackTrace(System.err);
+                    LOG.error("Startup failed", t);
+                    t.printStackTrace();
                     return null;
                 });
     }
