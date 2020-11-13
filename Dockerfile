@@ -1,15 +1,4 @@
-FROM alpine:latest as build
-
-RUN apk --no-cache add binutils curl tar gzip
-
-#
-# Install JDK
-#
-RUN curl https://cdn.azul.com/zulu/bin/zulu15.28.13-ca-jdk15.0.1-linux_musl_x64.tar.gz -o /jdk.tar.gz
-RUN mkdir -p /jdk
-RUN tar xzf /jdk.tar.gz --strip-components=1 -C /jdk
-ENV PATH=/jdk/bin:$PATH
-ENV JAVA_HOME=/jdk
+FROM eu.gcr.io/prod-bip/alpine-jdk15-buildtools:master-7744b1c6a23129ceaace641d6d76d0a742440b58 as build
 
 #
 # Build stripped JVM
@@ -28,6 +17,7 @@ RUN apk --no-cache add curl tar gzip nano jq
 # Resources from build image
 #
 COPY --from=build /linked /jdk/
+COPY --from=build /opt/jdk/bin/jar /opt/jdk/bin/jcmd /opt/jdk/bin/jdb /opt/jdk/bin/jfr /opt/jdk/bin/jinfo /opt/jdk/bin/jmap /opt/jdk/bin/jps /opt/jdk/bin/jstack /opt/jdk/bin/jstat /jdk/bin/
 COPY run.sh /app/
 COPY target/libs /app/lib/
 COPY target/dataset-doc-service.jar /app/lib/
