@@ -2,13 +2,18 @@ package no.ssb.dapla.dataset.doc.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParser;
 import io.helidon.common.http.Http;
 import io.helidon.config.Config;
+import io.helidon.media.common.DefaultMediaSupport;
+import io.helidon.media.jackson.JacksonSupport;
+import io.helidon.webclient.WebClient;
 import io.helidon.webclient.WebClientResponse;
 import no.ssb.dapla.dataset.doc.service.model.SchemaWithOptions;
 import no.ssb.dapla.dataset.doc.service.model.TemplateValidationResult;
 import no.ssb.dapla.dataset.doc.service.model.ValidateTemplateOptions;
-import no.ssb.dapla.dataset.doc.template.ValidateResult;
 import org.apache.avro.Schema;
 import org.apache.spark.sql.avro.SchemaConverters;
 import org.junit.jupiter.api.BeforeAll;
@@ -88,5 +93,39 @@ class DatasetDocServiceHttpMockLdsTest extends DatasetDocServiceHttpTest {
         TemplateValidationResult body = response.content().as(TemplateValidationResult.class).toCompletableFuture().join();
         assertThat(body.getStatus()).isEqualTo("ok");
 
+    }
+
+    @Test
+    void thatWeGetCandidates() {
+        WebClient webClient = WebClient.builder()
+                .baseUri("http://localhost:" + webServer.port())
+                .addMediaSupport(DefaultMediaSupport.create())
+                .addMediaSupport(JacksonSupport.create(mapper))
+                .build();
+
+        WebClientResponse response = webClient.get()
+                .path("/doc/candidates/RepresentedVariable")
+                .submit().toCompletableFuture().join();
+
+        Http.ResponseStatus status = response.status();
+        assert status == Http.Status.OK_200;
+
+        String body = response.content().as(String.class).toCompletableFuture().join();
+
+        String expected = """
+            [
+              {
+                "id": "RepresentedVariable_DUMMY",
+                "name": "RepresentedVariable_default"
+              },
+              {
+                "id": "some-id-could-be-guid",
+                "name": "NationalFamilyIdentifier"
+              }
+            ]""";
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String result = gson.toJson(new JsonParser().parse(body));
+
+        assertThat(result).isEqualTo(expected);
     }
 }

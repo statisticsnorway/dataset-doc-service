@@ -9,6 +9,14 @@ public class Candidate {
     @JsonProperty
     String name;
 
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     public Candidate() {
     }
 

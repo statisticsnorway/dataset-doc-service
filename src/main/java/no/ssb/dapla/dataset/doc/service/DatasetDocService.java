@@ -8,16 +8,24 @@ import io.helidon.webserver.Routing;
 import io.helidon.webserver.ServerRequest;
 import io.helidon.webserver.ServerResponse;
 import io.helidon.webserver.Service;
+import no.ssb.dapla.dataset.doc.model.simple.Candidate;
 import no.ssb.dapla.dataset.doc.service.model.SchemaMapper;
 import no.ssb.dapla.dataset.doc.service.model.SchemaWithOptions;
 import no.ssb.dapla.dataset.doc.service.model.TemplateValidationResult;
 import no.ssb.dapla.dataset.doc.service.model.ValidateTemplateOptions;
+import no.ssb.dapla.dataset.doc.template.ConceptNameLookup;
 import no.ssb.dapla.dataset.doc.template.SchemaToTemplate;
 import no.ssb.dapla.dataset.doc.template.TemplateValidator;
 import no.ssb.dapla.dataset.doc.template.ValidateResult;
 import org.apache.avro.Schema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class DatasetDocService implements Service {
 
@@ -33,6 +41,7 @@ public class DatasetDocService implements Service {
     public void update(Routing.Rules rules) {
         rules.post("/template", Handler.create(SchemaWithOptions.class, this::createTemplate));
         rules.post("/validate", Handler.create(ValidateTemplateOptions.class, this::validateTemplate));
+        rules.get("/candidates/{type}", this::candidates);
     }
 
     private void createTemplate(ServerRequest req, ServerResponse res, SchemaWithOptions schemaWithOptions) {
@@ -62,6 +71,36 @@ public class DatasetDocService implements Service {
             LOG.error("error", e);
             res.status(Http.Status.INTERNAL_SERVER_ERROR_500).send(e.getMessage());
         }
+    }
+
+    private void candidates(ServerRequest req, ServerResponse res) {
+        try {
+            String type = req.path().param("type");
+            res.headers().contentType(MediaType.APPLICATION_JSON);
+            List<Candidate> candidates = getCandidatesFromLds(type);
+            res.status(Http.Status.OK_200).send(candidates);
+        } catch (Exception e) {
+            LOG.error("error", e);
+            res.status(Http.Status.INTERNAL_SERVER_ERROR_500).send(e.getMessage());
+        }
+    }
+
+    private List<Candidate> getCandidatesFromLds(String type) {
+        ConceptNameLookup conceptNameLookup = conceptClient.getConceptNameLookup();
+
+        Map<String, String> nameToIds;
+        if (type.equals("SentinelValueDomain")) {
+            nameToIds = new HashMap<>();
+            nameToIds.putAll(conceptNameLookup.getNameToIds("EnumeratedValueDomain"));
+            nameToIds.putAll(conceptNameLookup.getNameToIds("DescribedValueDomain"));
+        } else {
+            nameToIds = conceptNameLookup.getNameToIds(type);
+        }
+
+        return nameToIds.entrySet().stream()
+                .map(e -> new Candidate(e.getKey(), e.getValue()))
+                .sorted(Comparator.comparing(Candidate::getId))
+                .collect(Collectors.toList());
     }
 
     private String convert(Schema schema, boolean useSimpleFiltering) {
