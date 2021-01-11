@@ -32,9 +32,11 @@ public class DatasetDocService implements Service {
     private static final Logger LOG = LoggerFactory.getLogger(DatasetDocService.class);
 
     private final ConceptClient conceptClient;
+    private final ExplorationClient explorationClient;
 
     DatasetDocService(Config config) {
         conceptClient = new ConceptClient(config);
+        explorationClient = new ExplorationClient(config);
     }
 
     @Override
@@ -42,6 +44,7 @@ public class DatasetDocService implements Service {
         rules.post("/template", Handler.create(SchemaWithOptions.class, this::createTemplate));
         rules.post("/validate", Handler.create(ValidateTemplateOptions.class, this::validateTemplate));
         rules.get("/candidates/{type}", this::candidates);
+        rules.get("/info", this::info);
     }
 
     private void createTemplate(ServerRequest req, ServerResponse res, SchemaWithOptions schemaWithOptions) {
@@ -107,4 +110,17 @@ public class DatasetDocService implements Service {
         SchemaToTemplate schemaToTemplate = new SchemaToTemplate(schema, conceptClient.getConceptNameLookup()).withDoSimpleFiltering(useSimpleFiltering);
         return schemaToTemplate.generateSimpleTemplateAsJsonString();
     }
+
+    private void info(ServerRequest req, ServerResponse res) {
+        try {
+            String path = req.queryParams().first("path").orElseThrow();
+            res.headers().contentType(MediaType.APPLICATION_JSON);
+            var data = explorationClient.getExplorationMeta(path);
+            res.status(Http.Status.OK_200).send(data);
+        } catch (Exception e) {
+            LOG.error("error", e);
+            res.status(Http.Status.INTERNAL_SERVER_ERROR_500).send(e.getMessage());
+        }
+    }
+
 }

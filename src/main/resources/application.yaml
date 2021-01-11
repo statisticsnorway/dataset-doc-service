@@ -4,6 +4,10 @@ server:
   access-log:
     format: "%h %u %t %r %s %b %{Referer}i %T"
 
+exploration-lds:
+  port: 9091
+  host: http://localhost
+
 concept-lds:
   port: 9090
   host: http://localhost

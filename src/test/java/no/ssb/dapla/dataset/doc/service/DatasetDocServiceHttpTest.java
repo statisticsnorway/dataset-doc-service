@@ -49,15 +49,29 @@ class DatasetDocServiceHttpTest {
         }
     }
 
-    protected WebClientResponse getWebClientResponse(String json) {
-        WebClient webClient = WebClient.builder()
+    protected WebClient createWebClient() {
+        return WebClient.builder()
                 .baseUri("http://localhost:" + webServer.port())
                 .addMediaSupport(DefaultMediaSupport.create())
                 .addMediaSupport(JacksonSupport.create(mapper))
                 .build();
+    }
+
+    protected WebClientResponse getWebClientResponse(String json) {
+        WebClient webClient = createWebClient();
 
         return webClient.post()
                 .path("/doc/template")
                 .submit(json).toCompletableFuture().join();
+    }
+
+    protected WebClientResponse doHttpGet(String path) {
+        WebClient webClient = WebClient.builder()
+                .baseUri("http://localhost:" + webServer.port())
+                .build();
+
+        return webClient.get()
+                .path(path)
+                .submit().toCompletableFuture().join();
     }
 }

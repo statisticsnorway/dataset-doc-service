@@ -52,7 +52,8 @@ class LineageDocServiceHttpTest {
     @BeforeAll
     public static void startTheServer() {
         Config config = Config
-                .builder(classpath("application-test.yaml"),
+                .builder(classpath("application.yaml"),
+                        classpath("application-test.yaml"),
                         classpath("application-dev.yaml"))
                 .metaConfig()
                 .build();
