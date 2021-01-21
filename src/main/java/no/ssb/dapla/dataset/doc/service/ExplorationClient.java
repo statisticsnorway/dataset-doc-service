@@ -42,19 +42,32 @@ public class ExplorationClient {
                           relationType
                           id
                           instanceVariable {
+                            createdBy
+                            shortName
                             name {
                               languageText
                             }
                             description {
                               languageText
                             }
-                            createdBy
+                            dataStructureComponentType
                             representedVariable {
-                              name {
-                                languageText
+                              createdBy
+                              shortName
+                              id
+                            }
+                            population {
+                              createdBy
+                              shortName
+                              id
+                            }
+                            sentinelValueDomain {
+                              __typename
+                              ... on DescribedValueDomain {
+                                shortName
                               }
-                              description {
-                                languageText
+                              ... on EnumeratedValueDomain {
+                                shortName
                               }
                             }
                           }
