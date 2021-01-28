@@ -52,22 +52,36 @@ public class ExplorationClient {
                             }
                             dataStructureComponentType
                             representedVariable {
-                              createdBy
-                              shortName
                               id
+                              createdBy
+                              name {
+                                languageCode
+                                languageText
+                              }
                             }
                             population {
-                              createdBy
-                              shortName
                               id
+                              createdBy
+                              name {
+                                languageCode
+                                languageText
+                              }
                             }
                             sentinelValueDomain {
                               __typename
                               ... on DescribedValueDomain {
-                                shortName
+                                id
+                                name {
+                                  languageCode
+                                  languageText
+                                }
                               }
                               ... on EnumeratedValueDomain {
-                                shortName
+                                id
+                                name {
+                                  languageCode
+                                  languageText
+                                }
                               }
                             }
                           }
