@@ -27,6 +27,7 @@ public class SchemaToTemplate extends SchemaTraverse<Record> {
     private final ConceptNameLookup conceptNameLookup;
     private final List<String> instanceVariableFilter = new ArrayList<>();
     private final List<String> logicalRecordFilter = new ArrayList<>();
+    private SmartMatchLookup smartMatchLookup;
 
     public SchemaToTemplate(Schema schema) {
         this.schema = schema;
@@ -35,6 +36,12 @@ public class SchemaToTemplate extends SchemaTraverse<Record> {
 
     public SchemaToTemplate(Schema schema, ConceptNameLookup conceptNameLookup) {
         this.schema = schema;
+        this.conceptNameLookup = conceptNameLookup;
+    }
+
+    public SchemaToTemplate(Schema schema, ConceptNameLookup conceptNameLookup, SmartMatchLookup smartMatchLookup) {
+        this.schema = schema;
+        this.smartMatchLookup = smartMatchLookup;
         this.conceptNameLookup = conceptNameLookup;
     }
 
@@ -118,7 +125,7 @@ public class SchemaToTemplate extends SchemaTraverse<Record> {
     }
 
     private Instance getInstanceVariable(String name, String description) {
-        return SimpleBuilder.createInstanceVariableBuilder(conceptNameLookup)
+        return SimpleBuilder.createInstanceVariableBuilder(conceptNameLookup, smartMatchLookup)
                 .name(name)
                 .description(description != null ? description : "")
                 .dataStructureComponentType("MEASURE")

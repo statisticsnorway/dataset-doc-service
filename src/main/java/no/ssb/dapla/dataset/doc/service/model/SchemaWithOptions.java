@@ -7,6 +7,9 @@ public class SchemaWithOptions {
     @JsonProperty
     private boolean useSimpleFiltering;
 
+    @JsonProperty
+    private String datasetPath; // Used for adding smart match id's
+
     @JsonUnwrapped
     private SchemaType schemaType;
 
@@ -20,6 +23,10 @@ public class SchemaWithOptions {
 
     public Boolean useSimpleFiltering() {
         return useSimpleFiltering;
+    }
+
+    public String getDatasetPath() {
+        return datasetPath;
     }
 
     private SchemaWithOptions() {

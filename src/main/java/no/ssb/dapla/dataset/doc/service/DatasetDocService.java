@@ -1,5 +1,6 @@
 package no.ssb.dapla.dataset.doc.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import io.helidon.common.http.Http;
 import io.helidon.common.http.MediaType;
 import io.helidon.config.Config;
@@ -14,7 +15,9 @@ import no.ssb.dapla.dataset.doc.service.model.SchemaWithOptions;
 import no.ssb.dapla.dataset.doc.service.model.TemplateValidationResult;
 import no.ssb.dapla.dataset.doc.service.model.ValidateTemplateOptions;
 import no.ssb.dapla.dataset.doc.template.ConceptNameLookup;
+import no.ssb.dapla.dataset.doc.template.LdsSmartMatchLookup;
 import no.ssb.dapla.dataset.doc.template.SchemaToTemplate;
+import no.ssb.dapla.dataset.doc.template.SmartMatchLookup;
 import no.ssb.dapla.dataset.doc.template.TemplateValidator;
 import no.ssb.dapla.dataset.doc.template.ValidateResult;
 import org.apache.avro.Schema;
@@ -49,8 +52,9 @@ public class DatasetDocService implements Service {
 
     private void createTemplate(ServerRequest req, ServerResponse res, SchemaWithOptions schemaWithOptions) {
         try {
+            String datasetPath = schemaWithOptions.getDatasetPath();
             Schema avroSchema = SchemaMapper.getAvroSchema(schemaWithOptions.getSchemaType(), schemaWithOptions.getSchema());
-            String result = convert(avroSchema, schemaWithOptions.useSimpleFiltering());
+            String result = convert(avroSchema, schemaWithOptions.useSimpleFiltering(), datasetPath);
             res.headers().contentType(MediaType.APPLICATION_JSON);
             res.status(Http.Status.OK_200).send(result);
         } catch (Exception e) {
@@ -106,8 +110,13 @@ public class DatasetDocService implements Service {
                 .collect(Collectors.toList());
     }
 
-    private String convert(Schema schema, boolean useSimpleFiltering) {
-        SchemaToTemplate schemaToTemplate = new SchemaToTemplate(schema, conceptClient.getConceptNameLookup()).withDoSimpleFiltering(useSimpleFiltering);
+    private String convert(Schema schema, boolean useSimpleFiltering, String datasetPath) {
+        SmartMatchLookup smartMatchLookup = null;
+        if (datasetPath != null) {
+            JsonNode node = null; //explorationClient.getExplorationMeta(datasetPath);
+            smartMatchLookup = new LdsSmartMatchLookup(datasetPath, node);
+        }
+        SchemaToTemplate schemaToTemplate = new SchemaToTemplate(schema, new GsimEnumLookup(), smartMatchLookup).withDoSimpleFiltering(useSimpleFiltering);
         return schemaToTemplate.generateSimpleTemplateAsJsonString();
     }
 

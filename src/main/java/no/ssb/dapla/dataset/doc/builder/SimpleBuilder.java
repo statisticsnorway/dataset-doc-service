@@ -4,7 +4,9 @@ import no.ssb.dapla.dataset.doc.model.simple.EnumInfo;
 import no.ssb.dapla.dataset.doc.model.simple.TypeInfo;
 import no.ssb.dapla.dataset.doc.model.simple.Instance;
 import no.ssb.dapla.dataset.doc.model.simple.Record;
+import no.ssb.dapla.dataset.doc.service.model.SmartMatch;
 import no.ssb.dapla.dataset.doc.template.ConceptNameLookup;
+import no.ssb.dapla.dataset.doc.template.SmartMatchLookup;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,8 +22,8 @@ public class SimpleBuilder {
         return new LogicalRecordBuilder(conceptNameLookup);
     }
 
-    public static InstanceVariableBuilder createInstanceVariableBuilder(ConceptNameLookup conceptNameLookup) {
-        return new InstanceVariableBuilder(conceptNameLookup);
+    public static InstanceVariableBuilder createInstanceVariableBuilder(ConceptNameLookup conceptNameLookup, SmartMatchLookup smartMatchLookup) {
+        return new InstanceVariableBuilder(conceptNameLookup, smartMatchLookup);
     }
 
     public static class LogicalRecordBuilder {
@@ -63,9 +65,11 @@ public class SimpleBuilder {
 
         private final Instance instance = new Instance();
         private final ConceptNameLookup conceptNameLookup;
+        private final SmartMatchLookup smartMatchLookup;
 
-        public InstanceVariableBuilder(ConceptNameLookup conceptNameLookup) {
+        public InstanceVariableBuilder(ConceptNameLookup conceptNameLookup, SmartMatchLookup smartMatchLookup) {
             this.conceptNameLookup = conceptNameLookup;
+            this.smartMatchLookup = smartMatchLookup;
         }
 
         public InstanceVariableBuilder dataStructureComponentType(String dataStructureComponentType) {
@@ -76,8 +80,10 @@ public class SimpleBuilder {
         }
 
         public InstanceVariableBuilder representedVariable(String representedVariable) {
-            Map<String, String> nameToIds = conceptNameLookup.getNameToIds("RepresentedVariable");
-            TypeInfo typeInfo = new TypeInfo(representedVariable, "RepresentedVariable", nameToIds);
+            List<SmartMatch> smartMatches = smartMatchLookup.getSmartId("RepresentedVariable", representedVariable);
+            SmartMatch smartMatch = smartMatches.get(0);
+
+            TypeInfo typeInfo = new TypeInfo(representedVariable, "RepresentedVariable", smartMatch.getTypeMatchId("RepresentedVariable"));
             instance.setRepresentedVariable(typeInfo);
             return this;
         }

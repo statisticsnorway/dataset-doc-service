@@ -1,5 +1,6 @@
 package no.ssb.dapla.dataset.doc.model.simple;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -13,6 +14,10 @@ public class TypeInfo {
     @JsonProperty("selected-id")
     private String id;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonProperty("smart-match-id")
+    private String smartMatchId;
+
     @JsonProperty("concept-type")
     private String type;
 
@@ -22,6 +27,14 @@ public class TypeInfo {
     public TypeInfo() {
     }
 
+    public TypeInfo(String id, String type, String smartMatchId) {
+        this.id = id;
+        this.type = type;
+        this.smartMatchId = smartMatchId;
+        this.candidates = List.of();
+    }
+
+    // Keep this for now, but we will most likely remove
     public TypeInfo(String id, String type, Map<String, String> candidatesNameToId) {
         this.id = id;
         this.type = type;
@@ -33,8 +46,9 @@ public class TypeInfo {
                     .sorted(Comparator.comparing(o -> o.id))
                     .collect(Collectors.toList());
         }
-        makeSureWeHaveOneElement();
-        makeSureWeHaveCorrectSelectedId();
+        //makeSureWeHaveOneElement();
+        //makeSureWeHaveCorrectSelectedId();
+        this.id = "get-from-smart-match";
     }
 
     private void makeSureWeHaveCorrectSelectedId() {
