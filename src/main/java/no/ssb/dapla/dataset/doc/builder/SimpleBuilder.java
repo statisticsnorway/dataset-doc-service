@@ -79,11 +79,11 @@ public class SimpleBuilder {
             return this;
         }
 
-        public InstanceVariableBuilder representedVariable(String representedVariable) {
-            List<SmartMatch> smartMatches = smartMatchLookup.getSmartId("RepresentedVariable", representedVariable);
+        public InstanceVariableBuilder representedVariable(String fieldName) {
+            List<SmartMatch> smartMatches = smartMatchLookup.getSmartId("RepresentedVariable", fieldName);
             SmartMatch smartMatch = smartMatches.get(0);
 
-            TypeInfo typeInfo = new TypeInfo(representedVariable, "RepresentedVariable", smartMatch.getTypeMatchId("RepresentedVariable"));
+            TypeInfo typeInfo = new TypeInfo(fieldName, "RepresentedVariable", smartMatch.getTypeMatchId("RepresentedVariable"));
             instance.setRepresentedVariable(typeInfo);
             return this;
         }
@@ -93,18 +93,18 @@ public class SimpleBuilder {
             return this;
         }
 
-        public InstanceVariableBuilder population(String population) {
+        public InstanceVariableBuilder population(String fieldName) {
             Map<String, String> nameToIds = conceptNameLookup.getNameToIds("Population");
-            TypeInfo typeInfo = new TypeInfo(population, "Population", nameToIds);
+            TypeInfo typeInfo = new TypeInfo(fieldName, "Population", nameToIds);
             instance.setPopulation(typeInfo);
             return this;
         }
 
-        public InstanceVariableBuilder sentinelValueDomain(String sentinelValueDomain) {
+        public InstanceVariableBuilder sentinelValueDomain(String fieldName) {
             HashMap<String, String> result = new HashMap<>();
             result.putAll(conceptNameLookup.getNameToIds("EnumeratedValueDomain"));
             result.putAll(conceptNameLookup.getNameToIds("DescribedValueDomain"));
-            TypeInfo typeInfo = new TypeInfo(sentinelValueDomain, "EnumeratedValueDomain,DescribedValueDomain", result);
+            TypeInfo typeInfo = new TypeInfo(fieldName, "EnumeratedValueDomain,DescribedValueDomain", result);
             instance.setSentinelValueDomain(typeInfo);
             return this;
         }

@@ -129,9 +129,9 @@ public class SchemaToTemplate extends SchemaTraverse<Record> {
                 .name(name)
                 .description(description != null ? description : "")
                 .dataStructureComponentType("MEASURE")
-                .representedVariable("RepresentedVariable_DUMMY")
-                .sentinelValueDomain("ValueDomain_DUMMY")
-                .population("Population_DUMMY")
+                .representedVariable(name)
+                .sentinelValueDomain(name)
+                .population(name)
                 .build();
     }
 
