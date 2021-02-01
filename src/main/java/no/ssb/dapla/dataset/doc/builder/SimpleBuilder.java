@@ -4,6 +4,7 @@ import no.ssb.dapla.dataset.doc.model.simple.EnumInfo;
 import no.ssb.dapla.dataset.doc.model.simple.TypeInfo;
 import no.ssb.dapla.dataset.doc.model.simple.Instance;
 import no.ssb.dapla.dataset.doc.model.simple.Record;
+import no.ssb.dapla.dataset.doc.service.model.ConceptTypeInfo;
 import no.ssb.dapla.dataset.doc.service.model.SmartMatch;
 import no.ssb.dapla.dataset.doc.template.ConceptNameLookup;
 import no.ssb.dapla.dataset.doc.template.SmartMatchLookup;
@@ -80,9 +81,8 @@ public class SimpleBuilder {
         }
 
         public InstanceVariableBuilder representedVariable(String fieldName) {
-            SmartMatch smartMatch = smartMatchLookup.getSmartId("RepresentedVariable", fieldName);
-
-            TypeInfo typeInfo = new TypeInfo(fieldName, "RepresentedVariable", smartMatch.getTypeMatchId("RepresentedVariable"));
+            ConceptTypeInfo smartMatch = smartMatchLookup.getSmartId("RepresentedVariable", fieldName);
+            TypeInfo typeInfo = new TypeInfo(fieldName, "RepresentedVariable", smartMatch.getId());
             instance.setRepresentedVariable(typeInfo);
             return this;
         }
@@ -93,8 +93,8 @@ public class SimpleBuilder {
         }
 
         public InstanceVariableBuilder population(String fieldName) {
-            SmartMatch smartMatch = smartMatchLookup.getSmartId("Population", fieldName);
-            TypeInfo typeInfo = new TypeInfo(fieldName, "Population", smartMatch.getTypeMatchId("Population"));
+            ConceptTypeInfo smartMatch = smartMatchLookup.getSmartId("Population", fieldName);
+            TypeInfo typeInfo = new TypeInfo(fieldName, "Population", smartMatch.getId());
             instance.setPopulation(typeInfo);
             return this;
         }

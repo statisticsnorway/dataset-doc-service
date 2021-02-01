@@ -6,6 +6,10 @@ public class ConceptTypeInfo {
     private String name;
     private String createdBy;
 
+    public static ConceptTypeInfo createUnknown(String type, String name) {
+        return new ConceptTypeInfo(type, "unknown", name, "");
+    }
+
     public ConceptTypeInfo(String type, String id, String name, String createdBy) {
         this.type = type;
         this.id = id;
@@ -13,7 +17,7 @@ public class ConceptTypeInfo {
         this.createdBy = createdBy;
     }
 
-    public String getId()   {
+    public String getId() {
         return id;
     }
 

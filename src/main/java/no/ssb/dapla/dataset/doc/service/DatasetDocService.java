@@ -113,7 +113,7 @@ public class DatasetDocService implements Service {
     private String convert(Schema schema, boolean useSimpleFiltering, String datasetPath) {
         SmartMatchLookup smartMatchLookup = null;
         if (datasetPath != null) {
-            JsonNode node = null; //explorationClient.getExplorationMeta(datasetPath);
+            JsonNode node = explorationClient.getExplorationMeta(datasetPath);
             smartMatchLookup = new LdsSmartMatchLookup(datasetPath, node);
         }
         SchemaToTemplate schemaToTemplate = new SchemaToTemplate(schema, new GsimEnumLookup(), smartMatchLookup).withDoSimpleFiltering(useSimpleFiltering);
