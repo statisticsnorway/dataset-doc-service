@@ -12,6 +12,10 @@ public class SmartMatch {
         return matchList.get(0).getId();
     }
 
+    public String getFieldName() {
+        return id.split("/$")[1];
+    }
+
     public String getTypeMatchId(String conceptType) {
         Optional<ConceptTypeInfo> first = matchList.stream()
                 .filter(conceptTypeInfo -> conceptTypeInfo.getType().equals(conceptType))

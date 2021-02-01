@@ -17,19 +17,19 @@ public class LdsSmartMatchLookup implements SmartMatchLookup {
     }
 
     @Override
-    public List<SmartMatch> getSmartId(String conceptType, String fieldName) {
+    public SmartMatch getSmartId(String conceptType, String fieldName) {
         // TODO: parse json and find matches
 
-        return List.of(new SmartMatch("inherited", "felles.demo.dapla.oktober.kommune$fnr",
+        return  new SmartMatch("inherited", "felles.demo.dapla.oktober.kommune$fnr",
                 List.of(
                         new ConceptTypeInfo("RepresentedVariable",
-                                "6cdecd72-c4a8-4b56-9c0a-9fd01c4fea56",
+                                fieldName + "-from_SmartMatchLookup",
                                 "Fødselsnummer",
                                 "BNJ"),
                         new ConceptTypeInfo("Population",
-                                "96869bb9-ebcd-4630-ab73-005a4c4b4674",
+                                fieldName + "-from_SmartMatchLookup",
                                 "Personer med skatteplikt til Norge i 2019",
                                 "BNJ")
-                )));
+                ));
     }
 }

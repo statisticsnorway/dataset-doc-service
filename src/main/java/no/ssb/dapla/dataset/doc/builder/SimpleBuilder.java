@@ -80,8 +80,7 @@ public class SimpleBuilder {
         }
 
         public InstanceVariableBuilder representedVariable(String fieldName) {
-            List<SmartMatch> smartMatches = smartMatchLookup.getSmartId("RepresentedVariable", fieldName);
-            SmartMatch smartMatch = smartMatches.get(0);
+            SmartMatch smartMatch = smartMatchLookup.getSmartId("RepresentedVariable", fieldName);
 
             TypeInfo typeInfo = new TypeInfo(fieldName, "RepresentedVariable", smartMatch.getTypeMatchId("RepresentedVariable"));
             instance.setRepresentedVariable(typeInfo);
@@ -94,8 +93,8 @@ public class SimpleBuilder {
         }
 
         public InstanceVariableBuilder population(String fieldName) {
-            Map<String, String> nameToIds = conceptNameLookup.getNameToIds("Population");
-            TypeInfo typeInfo = new TypeInfo(fieldName, "Population", nameToIds);
+            SmartMatch smartMatch = smartMatchLookup.getSmartId("Population", fieldName);
+            TypeInfo typeInfo = new TypeInfo(fieldName, "Population", smartMatch.getTypeMatchId("Population"));
             instance.setPopulation(typeInfo);
             return this;
         }
