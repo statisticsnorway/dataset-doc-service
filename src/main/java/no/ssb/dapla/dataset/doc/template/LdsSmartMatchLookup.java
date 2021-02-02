@@ -69,6 +69,9 @@ public class LdsSmartMatchLookup implements SmartMatchLookup {
         ConceptTypeInfo getConceptType(String conceptType) {
             if (!isDocumented()) return ConceptTypeInfo.createUnknown(conceptType, id);
             String decapitalizedConceptType = Introspector.decapitalize(conceptType);
+            if (decapitalizedConceptType.equals("enumeratedValueDomain") || decapitalizedConceptType.equals("describedValueDomain") ) {
+                 decapitalizedConceptType = "sentinelValueDomain";
+            }
             JsonNode node = instanceVariable.get(decapitalizedConceptType);
             if (node == null) return ConceptTypeInfo.createUnknown(conceptType, id);
 

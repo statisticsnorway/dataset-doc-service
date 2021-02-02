@@ -1,10 +1,10 @@
 package no.ssb.dapla.dataset.doc.service.model;
 
 public class ConceptTypeInfo {
-    private String type;
-    private String id;
-    private String name;
-    private String createdBy;
+    private final String type;
+    private final String id;
+    private final String name;
+    private final String createdBy;
 
     public static ConceptTypeInfo createUnknown(String type, String name) {
         return new ConceptTypeInfo(type, "unknown", name, "");
@@ -15,6 +15,10 @@ public class ConceptTypeInfo {
         this.id = id;
         this.name = name;
         this.createdBy = createdBy;
+    }
+
+    public boolean isUnknown() {
+        return id.equals("unknown");
     }
 
     public String getId() {

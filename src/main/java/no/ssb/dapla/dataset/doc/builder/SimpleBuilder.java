@@ -100,10 +100,11 @@ public class SimpleBuilder {
         }
 
         public InstanceVariableBuilder sentinelValueDomain(String fieldName) {
-            HashMap<String, String> result = new HashMap<>();
-            result.putAll(conceptNameLookup.getNameToIds("EnumeratedValueDomain"));
-            result.putAll(conceptNameLookup.getNameToIds("DescribedValueDomain"));
-            TypeInfo typeInfo = new TypeInfo(fieldName, "EnumeratedValueDomain,DescribedValueDomain", result);
+            ConceptTypeInfo smartMatch = smartMatchLookup.getSmartId("EnumeratedValueDomain", fieldName);
+            if (smartMatch.isUnknown()) {
+                smartMatch = smartMatchLookup.getSmartId("DescribedValueDomain", fieldName);
+            }
+            TypeInfo typeInfo = new TypeInfo(fieldName, "EnumeratedValueDomain,DescribedValueDomain", smartMatch.getId());
             instance.setSentinelValueDomain(typeInfo);
             return this;
         }

@@ -71,6 +71,7 @@ public class ExplorationClient {
                               __typename
                               ... on DescribedValueDomain {
                                 id
+                                createdBy
                                 name {
                                   languageCode
                                   languageText
@@ -78,6 +79,7 @@ public class ExplorationClient {
                               }
                               ... on EnumeratedValueDomain {
                                 id
+                                createdBy
                                 name {
                                   languageCode
                                   languageText
