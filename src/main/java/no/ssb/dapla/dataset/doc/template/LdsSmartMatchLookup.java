@@ -26,19 +26,20 @@ public class LdsSmartMatchLookup implements SmartMatchLookup {
         JsonNode dataSourcePath = unitDataSet.get("dataSourcePath");
         System.out.println(dataSourcePath);
 
-        JsonNode smartMatches = unitDataSet.get("lineage").get("reverseLineageFieldLineageDataset");
+        JsonNode lineageDataset = unitDataSet.get("lineage").get("reverseLineageFieldLineageDataset");
         ObjectMapper objectMapper = new ObjectMapper();
 
-        if (smartMatches.isArray()) {
-            for (JsonNode node : smartMatches) {
-                String fieldId = node.get("id").textValue().split("\\$")[1];
+        if (lineageDataset.isArray()) {
+            for (JsonNode smartGroup : lineageDataset) {
+                String fieldId = smartGroup.get("id").textValue().split("\\$")[1];
                 System.out.println(fieldId);
-                JsonNode smartItems = node.get("smart");
-                for (JsonNode smart1 : smartItems) {
-                    System.out.println(smart1);
+                JsonNode smartMatches = smartGroup.get("smart");
+                for (JsonNode smartMatch : smartMatches) {
                     try {
-                        Smart smart3 = objectMapper.treeToValue(smart1, Smart.class);
-                        idToSmartMatch.put(fieldId, smart3);
+                        Smart smart = objectMapper.treeToValue(smartMatch, Smart.class);
+                        if (!smart.isValidRelationType()) continue;
+                        System.out.println(smartMatch);
+                        idToSmartMatch.put(fieldId, smart);
                     } catch (JsonProcessingException e) {
                         e.printStackTrace();
                     }
@@ -61,16 +62,19 @@ public class LdsSmartMatchLookup implements SmartMatchLookup {
             return instanceVariable != null;
         }
 
+        boolean isValidRelationType() {
+            return relationType.equals("inherited");
+        }
+
         ConceptTypeInfo getConceptType(String conceptType) {
-            if (!isDocumented())  return ConceptTypeInfo.createUnknown(conceptType, id);
+            if (!isDocumented()) return ConceptTypeInfo.createUnknown(conceptType, id);
             String decapitalizedConceptType = Introspector.decapitalize(conceptType);
             JsonNode node = instanceVariable.get(decapitalizedConceptType);
             if (node == null) return ConceptTypeInfo.createUnknown(conceptType, id);
 
             Optional<JsonNode> nbName = StreamSupport.stream(node.get("name").spliterator(), false)
-                    .filter(jsonNode -> jsonNode.get("languageCode").asText().contains("nb"))
-                    .map(jsonNode -> jsonNode.get("languageText")).findFirst();
-            if (nbName.isEmpty()) return ConceptTypeInfo.createUnknown(conceptType, id);;
+                    .map(jsonNode -> jsonNode.get("languageText")).findFirst(); // TODO: sort and return norwegian first
+            if (nbName.isEmpty()) return ConceptTypeInfo.createUnknown(conceptType, id);
 
             return new ConceptTypeInfo(
                     conceptType,
