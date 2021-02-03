@@ -9,7 +9,10 @@ import no.ssb.dapla.dataset.doc.service.model.ConceptTypeInfo;
 import java.beans.Introspector;
 
 import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.StreamSupport;
 
 public class LdsSmartMatchLookup implements SmartMatchLookup {
@@ -48,7 +51,10 @@ public class LdsSmartMatchLookup implements SmartMatchLookup {
         }
     }
 
-    static class Smart {
+    private static class Smart {
+        static final Set<String> enums = Set.of("dataStructureComponentType");
+        static final Set<String> sentinelValueDomains = Set.of("enumeratedValueDomain", "describedValueDomain");
+
         @JsonProperty
         String relationType;
 
@@ -69,11 +75,15 @@ public class LdsSmartMatchLookup implements SmartMatchLookup {
         ConceptTypeInfo getConceptType(String conceptType) {
             if (!isDocumented()) return ConceptTypeInfo.createUnknown(conceptType, id);
             String decapitalizedConceptType = Introspector.decapitalize(conceptType);
-            if (decapitalizedConceptType.equals("enumeratedValueDomain") || decapitalizedConceptType.equals("describedValueDomain") ) {
-                 decapitalizedConceptType = "sentinelValueDomain";
+            if (sentinelValueDomains.contains(decapitalizedConceptType)) {
+                decapitalizedConceptType = "sentinelValueDomain";
             }
             JsonNode node = instanceVariable.get(decapitalizedConceptType);
             if (node == null) return ConceptTypeInfo.createUnknown(conceptType, id);
+
+            if (enums.contains(decapitalizedConceptType)) {
+                return ConceptTypeInfo.createEnum(conceptType, node.asText());
+            }
 
             Optional<JsonNode> nbName = StreamSupport.stream(node.get("name").spliterator(), false)
                     .map(jsonNode -> jsonNode.get("languageText")).findFirst(); // TODO: sort and return norwegian first

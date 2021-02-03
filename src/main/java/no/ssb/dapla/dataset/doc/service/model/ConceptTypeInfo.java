@@ -10,6 +10,10 @@ public class ConceptTypeInfo {
         return new ConceptTypeInfo(type, "unknown", name, "");
     }
 
+    public static ConceptTypeInfo createEnum(String type, String name) {
+        return new ConceptTypeInfo(type, name, name, "");
+    }
+
     public ConceptTypeInfo(String type, String id, String name, String createdBy) {
         this.type = type;
         this.id = id;

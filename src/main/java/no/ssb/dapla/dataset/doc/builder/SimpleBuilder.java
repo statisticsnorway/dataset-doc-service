@@ -5,11 +5,9 @@ import no.ssb.dapla.dataset.doc.model.simple.TypeInfo;
 import no.ssb.dapla.dataset.doc.model.simple.Instance;
 import no.ssb.dapla.dataset.doc.model.simple.Record;
 import no.ssb.dapla.dataset.doc.service.model.ConceptTypeInfo;
-import no.ssb.dapla.dataset.doc.service.model.SmartMatch;
 import no.ssb.dapla.dataset.doc.template.ConceptNameLookup;
 import no.ssb.dapla.dataset.doc.template.SmartMatchLookup;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -73,16 +71,17 @@ public class SimpleBuilder {
             this.smartMatchLookup = smartMatchLookup;
         }
 
-        public InstanceVariableBuilder dataStructureComponentType(String dataStructureComponentType) {
+        public InstanceVariableBuilder dataStructureComponentType(String fieldName) {
             List<String> enumList = conceptNameLookup.getGsimSchemaEnum(LDS_SCHEMA_NAME, "dataStructureComponentType");
-            EnumInfo info = new EnumInfo(dataStructureComponentType, enumList);
+            ConceptTypeInfo smartMatch = smartMatchLookup.getSmartId("dataStructureComponentType", fieldName);
+            EnumInfo info = new EnumInfo("", enumList, smartMatch.getId());
             instance.setDataStructureComponentType(info);
             return this;
         }
 
         public InstanceVariableBuilder representedVariable(String fieldName) {
             ConceptTypeInfo smartMatch = smartMatchLookup.getSmartId("RepresentedVariable", fieldName);
-            TypeInfo typeInfo = new TypeInfo(fieldName, "RepresentedVariable", smartMatch.getId());
+            TypeInfo typeInfo = new TypeInfo("", "RepresentedVariable", smartMatch.getId());
             instance.setRepresentedVariable(typeInfo);
             return this;
         }
@@ -94,7 +93,7 @@ public class SimpleBuilder {
 
         public InstanceVariableBuilder population(String fieldName) {
             ConceptTypeInfo smartMatch = smartMatchLookup.getSmartId("Population", fieldName);
-            TypeInfo typeInfo = new TypeInfo(fieldName, "Population", smartMatch.getId());
+            TypeInfo typeInfo = new TypeInfo("", "Population", smartMatch.getId());
             instance.setPopulation(typeInfo);
             return this;
         }
@@ -104,7 +103,7 @@ public class SimpleBuilder {
             if (smartMatch.isUnknown()) {
                 smartMatch = smartMatchLookup.getSmartId("DescribedValueDomain", fieldName);
             }
-            TypeInfo typeInfo = new TypeInfo(fieldName, "EnumeratedValueDomain,DescribedValueDomain", smartMatch.getId());
+            TypeInfo typeInfo = new TypeInfo("", "EnumeratedValueDomain,DescribedValueDomain", smartMatch.getId());
             instance.setSentinelValueDomain(typeInfo);
             return this;
         }

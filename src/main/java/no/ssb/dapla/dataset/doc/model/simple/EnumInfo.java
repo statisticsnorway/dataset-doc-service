@@ -7,10 +7,13 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.List;
 import java.util.Map;
 
-@JsonPropertyOrder({"value", "type"})
+@JsonPropertyOrder({"value", "smart-match-id", "type"})
 public class EnumInfo {
     @JsonProperty("selected-enum")
     private String value;
+
+    @JsonProperty("smart-match-id")
+    private String smartMatchId;
 
     @JsonProperty("enums")
     private List<String> enums;
@@ -22,8 +25,9 @@ public class EnumInfo {
         return value;
     }
 
-    public EnumInfo(String value, List<String> enums) {
+    public EnumInfo(String value, List<String> enums ,String smartMatchId) {
         this.value = value;
         this.enums = enums;
+        this.smartMatchId = smartMatchId;
     }
 }
