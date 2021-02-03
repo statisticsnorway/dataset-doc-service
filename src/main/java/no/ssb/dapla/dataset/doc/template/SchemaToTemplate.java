@@ -125,13 +125,12 @@ public class SchemaToTemplate extends SchemaTraverse<Record> {
     }
 
     private Instance getInstanceVariable(String name, String description) {
-        return SimpleBuilder.createInstanceVariableBuilder(conceptNameLookup, smartMatchLookup)
-                .name(name)
+        return SimpleBuilder.createInstanceVariableBuilder(conceptNameLookup, smartMatchLookup, name)
                 .description(description != null ? description : "")
-                .dataStructureComponentType(name)
-                .representedVariable(name)
-                .sentinelValueDomain(name)
-                .population(name)
+                .dataStructureComponentType()
+                .representedVariable()
+                .sentinelValueDomain()
+                .population()
                 .build();
     }
 

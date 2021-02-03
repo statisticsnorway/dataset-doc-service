@@ -21,8 +21,8 @@ public class SimpleBuilder {
         return new LogicalRecordBuilder(conceptNameLookup);
     }
 
-    public static InstanceVariableBuilder createInstanceVariableBuilder(ConceptNameLookup conceptNameLookup, SmartMatchLookup smartMatchLookup) {
-        return new InstanceVariableBuilder(conceptNameLookup, smartMatchLookup);
+    public static InstanceVariableBuilder createInstanceVariableBuilder(ConceptNameLookup conceptNameLookup, SmartMatchLookup smartMatchLookup, String name) {
+        return new InstanceVariableBuilder(conceptNameLookup, smartMatchLookup, name);
     }
 
     public static class LogicalRecordBuilder {
@@ -65,13 +65,16 @@ public class SimpleBuilder {
         private final Instance instance = new Instance();
         private final ConceptNameLookup conceptNameLookup;
         private final SmartMatchLookup smartMatchLookup;
+        private final String fieldName;
 
-        public InstanceVariableBuilder(ConceptNameLookup conceptNameLookup, SmartMatchLookup smartMatchLookup) {
+        public InstanceVariableBuilder(ConceptNameLookup conceptNameLookup, SmartMatchLookup smartMatchLookup, String fieldName) {
             this.conceptNameLookup = conceptNameLookup;
             this.smartMatchLookup = smartMatchLookup;
+            this.fieldName = fieldName;
+            instance.setName(fieldName);
         }
 
-        public InstanceVariableBuilder dataStructureComponentType(String fieldName) {
+        public InstanceVariableBuilder dataStructureComponentType() {
             List<String> enumList = conceptNameLookup.getGsimSchemaEnum(LDS_SCHEMA_NAME, "dataStructureComponentType");
             ConceptTypeInfo smartMatch = smartMatchLookup.getSmartId("dataStructureComponentType", fieldName);
             EnumInfo info = new EnumInfo("", enumList, smartMatch.getId());
@@ -79,26 +82,21 @@ public class SimpleBuilder {
             return this;
         }
 
-        public InstanceVariableBuilder representedVariable(String fieldName) {
+        public InstanceVariableBuilder representedVariable() {
             ConceptTypeInfo smartMatch = smartMatchLookup.getSmartId("RepresentedVariable", fieldName);
             TypeInfo typeInfo = new TypeInfo("", "RepresentedVariable", smartMatch.getId());
             instance.setRepresentedVariable(typeInfo);
             return this;
         }
 
-        public InstanceVariableBuilder name(String shortName) {
-            instance.setName(shortName);
-            return this;
-        }
-
-        public InstanceVariableBuilder population(String fieldName) {
+        public InstanceVariableBuilder population() {
             ConceptTypeInfo smartMatch = smartMatchLookup.getSmartId("Population", fieldName);
             TypeInfo typeInfo = new TypeInfo("", "Population", smartMatch.getId());
             instance.setPopulation(typeInfo);
             return this;
         }
 
-        public InstanceVariableBuilder sentinelValueDomain(String fieldName) {
+        public InstanceVariableBuilder sentinelValueDomain() {
             ConceptTypeInfo smartMatch = smartMatchLookup.getSmartId("EnumeratedValueDomain", fieldName);
             if (smartMatch.isUnknown()) {
                 smartMatch = smartMatchLookup.getSmartId("DescribedValueDomain", fieldName);
@@ -109,7 +107,9 @@ public class SimpleBuilder {
         }
 
         public InstanceVariableBuilder description(String description) {
-            instance.setDescription(description);
+            ConceptTypeInfo smartMatch = smartMatchLookup.getSmartId("InstanceVariable", fieldName);
+            String smartMatchDescription = smartMatch.getDescription();
+            instance.setDescription(smartMatchDescription.isEmpty() ? description : smartMatchDescription);
             return this;
         }
 
