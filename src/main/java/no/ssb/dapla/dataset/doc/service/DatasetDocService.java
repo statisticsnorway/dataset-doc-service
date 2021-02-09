@@ -10,6 +10,7 @@ import io.helidon.webserver.ServerRequest;
 import io.helidon.webserver.ServerResponse;
 import io.helidon.webserver.Service;
 import no.ssb.dapla.dataset.doc.model.simple.Candidate;
+import no.ssb.dapla.dataset.doc.service.model.ConceptTypeInfo;
 import no.ssb.dapla.dataset.doc.service.model.SchemaMapper;
 import no.ssb.dapla.dataset.doc.service.model.SchemaWithOptions;
 import no.ssb.dapla.dataset.doc.service.model.TemplateValidationResult;
@@ -115,6 +116,8 @@ public class DatasetDocService implements Service {
         if (datasetPath != null) {
             JsonNode node = explorationClient.getExplorationMeta(datasetPath);
             smartMatchLookup = new LdsSmartMatchLookup(datasetPath, node);
+        } else {
+            smartMatchLookup = ConceptTypeInfo::createUnknown;
         }
         SchemaToTemplate schemaToTemplate = new SchemaToTemplate(schema, new GsimEnumLookup(), smartMatchLookup).withDoSimpleFiltering(useSimpleFiltering);
         return schemaToTemplate.generateSimpleTemplateAsJsonString();

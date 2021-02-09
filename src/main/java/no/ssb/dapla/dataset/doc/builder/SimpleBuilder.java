@@ -84,14 +84,14 @@ public class SimpleBuilder {
 
         public InstanceVariableBuilder representedVariable() {
             ConceptTypeInfo smartMatch = smartMatchLookup.getSmartId("RepresentedVariable", fieldName);
-            TypeInfo typeInfo = new TypeInfo("", "RepresentedVariable", smartMatch.getId());
+            TypeInfo typeInfo = new TypeInfo(smartMatch.getId(), "RepresentedVariable", smartMatch.getId());
             instance.setRepresentedVariable(typeInfo);
             return this;
         }
 
         public InstanceVariableBuilder population() {
             ConceptTypeInfo smartMatch = smartMatchLookup.getSmartId("Population", fieldName);
-            TypeInfo typeInfo = new TypeInfo("", "Population", smartMatch.getId());
+            TypeInfo typeInfo = new TypeInfo(smartMatch.getId(), "Population", smartMatch.getId());
             instance.setPopulation(typeInfo);
             return this;
         }
@@ -101,7 +101,7 @@ public class SimpleBuilder {
             if (smartMatch.isUnknown()) {
                 smartMatch = smartMatchLookup.getSmartId("DescribedValueDomain", fieldName);
             }
-            TypeInfo typeInfo = new TypeInfo("", "EnumeratedValueDomain,DescribedValueDomain", smartMatch.getId());
+            TypeInfo typeInfo = new TypeInfo(smartMatch.getId(), "EnumeratedValueDomain,DescribedValueDomain", smartMatch.getId());
             instance.setSentinelValueDomain(typeInfo);
             return this;
         }

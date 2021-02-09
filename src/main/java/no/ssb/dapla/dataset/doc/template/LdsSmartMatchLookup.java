@@ -37,6 +37,7 @@ public class LdsSmartMatchLookup implements SmartMatchLookup {
                     try {
                         Smart smart = objectMapper.treeToValue(smartMatch, Smart.class);
                         if (!smart.isValidRelationType()) continue;
+                        if (!smart.isDocumented()) continue;
                         idToSmartMatch.put(fieldId, smart);
                     } catch (JsonProcessingException e) {
                         e.printStackTrace();
@@ -60,7 +61,7 @@ public class LdsSmartMatchLookup implements SmartMatchLookup {
         JsonNode instanceVariable;
 
         boolean isDocumented() {
-            return instanceVariable != null;
+            return !instanceVariable.isNull();
         }
 
         boolean isValidRelationType() {
