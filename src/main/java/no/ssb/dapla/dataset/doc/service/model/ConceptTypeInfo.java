@@ -8,7 +8,7 @@ public class ConceptTypeInfo {
     private final String createdBy;
 
     public static ConceptTypeInfo createUnknown(String type, String name) {
-        return new ConceptTypeInfo(type, "unknown", name, "", "");
+        return new ConceptTypeInfo(type, "", name, "", "");
     }
 
     public static ConceptTypeInfo createEnum(String type, String name) {

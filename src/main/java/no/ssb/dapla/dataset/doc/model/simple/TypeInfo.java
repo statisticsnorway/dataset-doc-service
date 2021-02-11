@@ -48,7 +48,7 @@ public class TypeInfo {
         }
         //makeSureWeHaveOneElement();
         //makeSureWeHaveCorrectSelectedId();
-        this.id = "get-from-smart-match";
+        this.id = "";
     }
 
     private void makeSureWeHaveCorrectSelectedId() {
