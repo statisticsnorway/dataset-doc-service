@@ -54,7 +54,14 @@ public class LdsConceptLookup implements ConceptNameLookup {
             for (Iterator<JsonNode> it = body.elements(); it.hasNext(); ) {
                 JsonNode node = it.next();
                 // TODO: more checks, or move to graphQL
-                String name = node.get("name").get(0).get("languageText").asText();
+                JsonNode nameNode = node.get("name");
+                // This should never happen, but we have data like this on staging now
+                if(nameNode == null || nameNode.isNull()) {
+                    LOG.warn("conceptType {} with id:{} is missing name", conceptType, node.get("id"));
+                    continue;
+                }
+
+                String name = nameNode.get(0).get("languageText").asText();
                 map.put(node.get("id").asText(), name);
             }
             LOG.info("Returned map size: {}", map.size());
